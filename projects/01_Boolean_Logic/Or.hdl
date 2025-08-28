@@ -14,6 +14,5 @@ CHIP Or {
     //// Replace this comment with your code.
     Not(in=a,out=nota); //Not(a)
     Not(in=b,out=notb); //Not(b)
-    And(a=nota,b=notb,out=andNaNb); 
-    Not(in=andNaNb,out=out); // a or b = !(!a and !b)
+    Nand(a=nota,b=notb,out=out); //a or b = !(!a and !b)
 }
