@@ -14,7 +14,8 @@ D FF의 기본 구조와 원리를 이해한다. 메모리에서 클럭의 중�
 
 #### 클럭
 
-![img](../../../../git/KimHyunWoo0102.github.io/images/README/240B4E3E59058F0026.gif)
+![240B4E3E59058F0026](https://github.com/user-attachments/assets/ab31a6fd-7ca0-4eab-a906-66a9c0758f6a)
+
 
 컴퓨터가 '상태'를 기억하고 값을 저장하려면, 시시각각 변화하는 전기 신호 중에서 특정 시점의 값만 정확히 포착하는 능력이 필요하다. 이를 위해 컴퓨터는 **'시간'**이라는 개념을 도입해야한다.
 
@@ -25,8 +26,7 @@ D FF의 기본 구조와 원리를 이해한다. 메모리에서 클럭의 중�
 
 
 #### 엣지 트리거
-
-![img](../../../../git/KimHyunWoo0102.github.io/images/README/img.png)
+<img width="1032" height="287" alt="img" src="https://github.com/user-attachments/assets/37060ec6-b823-48b3-ad1a-27f0950c78e8" />
 
 규칙적인 **클럭** 신호를 만들었다면, 이제 이 신호를 이용해 '원하는 시점'에만 데이터가 저장되도록 제어해야 한다. 이 제어 방식을 **트리거링**이라고 한다. 트리거링은 언제 데이터를 저장할지 결정하는 '방아쇠' 역할을 하며, 여기에는 크게 두 가지 방식이 있다.
 
@@ -36,16 +36,12 @@ D FF의 기본 구조와 원리를 이해한다. 메모리에서 클럭의 중�
 
 
 #### D 플립플롭
-
-![img](../../../../git/KimHyunWoo0102.github.io/images/README/image.png)
-
+<img width="547" height="246" alt="image" src="https://github.com/user-attachments/assets/28d62196-94fa-45b0-8f80-d3046441b4f5" />
 
 
 위 사진과 같이 NAND 게이트를 통해 D FF를 만들수 있다.
 
-
-
-![img](../../../../git/KimHyunWoo0102.github.io/images/README/4712_1.jpeg)
+![4712_1](https://github.com/user-attachments/assets/455155a2-34ea-470c-b78b-45fe907f204f)
 
 
 
