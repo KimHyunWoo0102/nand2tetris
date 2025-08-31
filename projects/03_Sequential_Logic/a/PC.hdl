@@ -15,5 +15,10 @@ CHIP PC {
     
     PARTS:
     //// Replace this comment with your code.
-    
+
+    Inc16(in=currentPC,out=incout);
+    Mux16(a=currentPC,b=incout,sel=inc,out=outAfterInc);    
+    Mux16(a=outAfterInc, b=in, sel=load, out=outAfterLoad);
+    Mux16(a=outAfterLoad, b=false, sel=reset, out=nextPC);
+    Register(in=nextPC,load=true,out=out,out=currentPC);
 }
