@@ -1,0 +1,88 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/5/CPU.hdl
+/**
+ * The Hack Central Processing unit (CPU).
+ * Parses the binary code in the instruction input and executes it according to the
+ * Hack machine language specification. In the case of a C-instruction, computes the
+ * function specified by the instruction. If the instruction specifies to read a memory
+ * value, the inM input is expected to contain this value. If the instruction specifies
+ * to write a value to the memory, sets the outM output to this value, sets the addressM
+ * output to the target address, and asserts the writeM output (when writeM = 0, any
+ * value may appear in outM).
+ * If the reset input is 0, computes the address of the next instruction and sets the
+ * pc output to that value. If the reset input is 1, sets pc to 0.
+ * Note: The outM and writeM outputs are combinational: they are affected by the
+ * instruction's execution during the current cycle. The addressM and pc outputs are
+ * clocked: although they are affected by the instruction's execution, they commit to
+ * their new values only in the next cycle.
+ */
+CHIP CPU {
+
+    IN  inM[16],         // M value input  (M = contents of RAM[A])
+        instruction[16], // Instruction for execution
+        reset;           // Signals whether to re-start the current
+                         // program (reset==1) or continue executing
+                         // the current program (reset==0).
+
+    OUT outM[16],        // M value output
+        writeM,          // Write to M? 
+        addressM[15],    // Address in data memory (of M)
+        pc[15];          // address of next instruction
+
+    PARTS:
+// ---명령어 판단---
+// 명령어가 A인지 C인지 판별
+Mux16(a=instruction, b=ALUout, sel=instruction[15], out = aRegisterIn);
+
+// ---A레지스터 로직---
+//A레지스터 로드 신호
+Not(in=instruction[15],out=isAInstruction); //A레지스터에는 A명령어일때 or C명령어고 d1이 켜질때
+And(a=instruction[15],b=instruction[5],out=isLoadAFromC); //d1=instruction[5]
+Or(a=isAInstruction,b=isLoadAFromC,out=loadARegister);
+
+//A레지스터
+ARegister(in=aRegisterIn,load=loadARegister,out=aRegisterOut,out[0..14]=addressM);
+
+//A를 그대로 쓸지 M[A]를 쓸지는 111accccccdddjjj에서 a명령어 보고 선택함
+Mux16(a=aRegisterOut,b=inM,sel=instruction[12],out=afterAInstruction);
+
+// ---D레지스터 로직 ---
+//D레지스터 로드 신호
+And(a=instruction[15], b=instruction[4], out=loadD); // d2 = instruction[4]
+//D레지스터
+DRegister(in=ALUout,load=loadD,out=dRegisterOut);
+
+// ---writeM---
+And(a=instruction[15],b=instruction[3],out=writeM);
+
+ // --- ALU 로직 ---
+ALU(x=dRegisterOut,y=afterAInstruction,
+zx=instruction[11],nx=instruction[10],zy=instruction[9],ny=instruction[8],
+f=instruction[7],no=instruction[6],
+out=ALUout,out=outM,zr=isZero,ng=isNegative);
+// zx ->x=0 zy -> y=0, nx반전 ny반전 +면 f=1아니면 and ,no는 out 반전
+//zr 은 out ==0?1:0 ng는 음수인지 체크
+
+// --- PC 점프 로직 ---
+// 1. 기본 상태 계산
+Not(in=isZero,out=notZero);
+Not(in=isNegative,out=notNegative);
+
+And(a=notZero,b=notNegative,out=isPositive);
+
+// 2. 점프 조건과 상태 조합
+And(a=instruction[0],b=isPositive,out=jumpIfGT); //JGT
+And(a=instruction[1],b=isZero,out=jumpIfEQ); //JEQ
+And(a=instruction[2],b=isNegative,out=jumpIfLT); //JLT
+
+// 3. 최종 점프 결정
+Or(a=jumpIfGT, b=jumpIfEQ, out=tempOr);
+Or(a=tempOr, b=jumpIfLT, out=shouldJump);
+//점프는 c명령어일때만 이므로 확인
+And(a=instruction[15], b=shouldJump, out=loadPC);
+
+//pc
+PC(in=aRegisterOut,load=loadPC,inc=true,reset=reset,out[0..14]=pc);
+}
