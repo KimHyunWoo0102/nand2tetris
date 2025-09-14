@@ -123,6 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Code.h" />
     <ClInclude Include="Parser.h" />
   </ItemGroup>
   <ItemGroup>

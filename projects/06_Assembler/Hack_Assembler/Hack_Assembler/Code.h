@@ -16,14 +16,26 @@ using binary = std::string;
 using instruction = std::string;
 
 class Code {
-	std::map<instruction, binary> cmp_map;
-	std::map<instruction, binary> dest_map;
-	std::map<instruction, binary> jump_map;
+    Code();
+    ~Code() = default;
+
+    // 4. 복사와 대입을 막기 위한 처리
+    Code(const Code&) = delete;
+    Code& operator=(const Code&) = delete;
+
+    // 5. 니모닉과 바이너리 코드를 저장할 맵(map)
+    std::map<std::string, std::string> destMap;
+    std::map<std::string, std::string> compMap;
+    std::map<std::string, std::string> jumpMap;
+
+    // 맵을 초기화하는 private 헬퍼 함수들
+    void initializeDestMap();
+    void initializeCompMap();
+    void initializeJumpMap();
 
 public:
-	Code() = default;
-
-	std::string dest(std::string& input);
-	std::string comp(std::string& input);
-	std::string jump(std::string& input);
+	static Code& getInstance();
+	std::string dest(const std::string& mnemonic);
+	std::string comp(const std::string& mnemonic);
+	std::string jump(const std::string& mnemonic);
 };
