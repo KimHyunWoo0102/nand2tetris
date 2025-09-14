@@ -14,6 +14,12 @@
 #include<map>
 
 //--------------------------------------
+// 명령어 타입 반환하는 enum class
+//--------------------------------------
+
+enum class instructionType { A_INSTRUCTION, C_INSTRUCTION, L_INSTRUCTION };
+
+//--------------------------------------
 // class Parser
 //--------------------------------------
 
@@ -26,9 +32,14 @@ public:
 	Parser(const char* filename);
 	//------------------------------------------
 	// 
-	bool hasMoreLines();
+	//bool hasMoreLines(); std::getline으로 변경
 	std::string getCurrentCommend() const { return currentCmd; }
-	void advance(std::string& line);
+	bool advance();
 
+	instructionType getInstructionType();
 
+	std::string symbol();
+	std::string dest();
+	std::string comp();
+	std::string jump();
 };

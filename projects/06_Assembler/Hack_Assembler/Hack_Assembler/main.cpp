@@ -4,10 +4,9 @@
 int main() {
 	try {
 		Parser p("../test.txt");
+		while (p.advance()) {
 
-		std::string str("  add=10 //asldk");
-		p.advance(str);
-		std::cout << str;
+		}
 	}
 	catch (std::exception& e) {
 		std::cerr << e.what();
