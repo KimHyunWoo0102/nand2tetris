@@ -28,18 +28,18 @@ class Parser {
 	std::string currentCmd;
 
 public:
-	Parser(std::string& filename);
-	Parser(const char* filename);
+	Parser(const std::string& filename);
+
 	//------------------------------------------
-	// 
-	//bool hasMoreLines(); std::getline으로 변경
+
 	std::string getCurrentCommend() const { return currentCmd; }
 	bool advance();
 
-	instructionType getInstructionType();
+	//------------------------------------------
 
-	std::string symbol();
-	std::string dest();
-	std::string comp();
-	std::string jump();
+	instructionType getInstructionType() const;
+	std::string symbol() const;
+	std::string dest() const;
+	std::string comp() const;
+	std::string jump() const;
 };

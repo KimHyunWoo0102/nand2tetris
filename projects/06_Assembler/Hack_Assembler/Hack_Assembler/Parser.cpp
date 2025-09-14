@@ -1,94 +1,105 @@
 #include "Parser.h"
-#include<exception>
+#include <stdexcept> 
 
-Parser::Parser(std::string& filename)
-{
-    ifs.exceptions(std::ios::failbit | std::ios::badbit);
+//------------------------------------------------------------
+//constructor
+//------------------------------------------------------------
 
+Parser::Parser(const std::string& filename) {
+    ifs.exceptions(std::ios::badbit); // 복구 불가능한 오류에 대해서만 예외 설정
     ifs.open(filename);
+    if (!ifs.is_open()) {
+        throw std::runtime_error("파일을 열 수 없습니다: " + filename);
+    }
 }
 
-Parser::Parser(const char* filename)
-{
-    ifs.exceptions(std::ios::badbit);
+//--------------------------------------------------------------
+//명령어 공백 및 주석 제거 파싱
+//--------------------------------------------------------------
 
-    ifs.open(filename);
-}
-
-
-bool Parser::advance()
-{
-    // 파일 끝에 도달할 때까지 루프를 돈다.
+bool Parser::advance() {
     while (std::getline(ifs, currentCmd)) {
-        // 1. 주석 제거
         auto comment_pos = currentCmd.find("//");
         if (comment_pos != std::string::npos) {
             currentCmd = currentCmd.substr(0, comment_pos);
         }
-
-        // 2. 앞뒤 공백 제거 (Trim)
-        auto first = currentCmd.find_first_not_of(" \t\n\v\r\f");
-        if (first == std::string::npos) { // 줄 전체가 공백이나 주석뿐인 경우
-            continue; // 루프의 처음으로 돌아가 다음 줄을 읽는다.
+        auto first = currentCmd.find_first_not_of(" \t\n\r\f\v");
+        if (first == std::string::npos) {
+            continue;
         }
-        auto last = currentCmd.find_last_not_of(" \t\n\v\r\f");
+        auto last = currentCmd.find_last_not_of(" \t\n\r\f\v");
         currentCmd = currentCmd.substr(first, last - first + 1);
 
-        // 3. 순수한 명령어를 찾았으므로 true를 반환하고 함수 종료
-        // currentCmd에 최종 결과가 저장되어 있다.
-        return true;
+        if (!currentCmd.empty()) {
+            return true;
+        }
     }
-
-    // while 루프가 끝났다는 것은 파일의 끝에 도달했다는 의미
     return false;
 }
 
-instructionType Parser::getInstructionType()
-{
-    if (currentCmd[0] == '@')return instructionType::A_INSTRUCTION;
-    if (currentCmd[0] == '(')return instructionType::L_INSTRUCTION;
+//----------------------------------------------------------------
+// 명령어 종류 및 명령어 별 구성 요소 파싱 로직
+//----------------------------------------------------------------
+
+instructionType Parser::getInstructionType() const {
+    if (currentCmd.empty()) throw std::runtime_error("명령어가 비어있습니다.");
+    if (currentCmd[0] == '@') return instructionType::A_INSTRUCTION;
+    if (currentCmd[0] == '(') return instructionType::L_INSTRUCTION;
     return instructionType::C_INSTRUCTION;
 }
 
-std::string Parser::symbol()
-{
-    instructionType type = getInstructionType();
+//----------------------------------------------------------------
+// A && L instruction has @xxx or (xxx)
 
+std::string Parser::symbol() const {
+    instructionType type = getInstructionType();
     if (type == instructionType::A_INSTRUCTION) {
-        // '@' 바로 다음 문자부터 끝까지 잘라낸다.
         return currentCmd.substr(1);
     }
-    else if (type == instructionType::L_INSTRUCTION) {
-        // 첫 번째 '('와 마지막 ')' 사이를 잘라낸다.
+    if (type == instructionType::L_INSTRUCTION) {
         return currentCmd.substr(1, currentCmd.length() - 2);
     }
-    else { // C_INSTRUCTION
-        return "";
-    }
+    return ""; // C-명령어일 경우 빈 문자열 반환
 }
 
-std::string Parser::dest()
-{
-    instructionType type = getInstructionType();
-    if (type == instructionType::C_INSTRUCTION) {
-        auto assign_pos = currentCmd.find("=");
-        
-        if (assign_pos == std::string::npos)
-            throw std::exception("invalid C instruction format!");
+//----------------------------------------------------------------
+// C instruction has (Dest = ) comp (;JOMP) () means optional
 
-        return currentCmd.substr(0,assign_pos);
+std::string Parser::dest() const {
+    if (getInstructionType() == instructionType::C_INSTRUCTION) {
+        auto assign_pos = currentCmd.find('=');
+        if (assign_pos != std::string::npos) {
+            return currentCmd.substr(0, assign_pos);
+        }
     }
-    else {
-        return "";
-    }
+    return ""; // C-명령어가 아니거나 '='가 없으면 빈 문자열 반환
 }
 
-std::string Parser::comp()
-{
-    return std::string();
+//----------------------------------------------------------------
+
+std::string Parser::comp() const {
+    if (getInstructionType() == instructionType::C_INSTRUCTION) {
+        auto assign_pos = currentCmd.find('=');
+        auto semicolon_pos = currentCmd.find(';');
+
+        size_t start = (assign_pos == std::string::npos) ? 0 : assign_pos + 1;
+
+        if (semicolon_pos != std::string::npos) {
+            return currentCmd.substr(start, semicolon_pos - start);
+        }
+        return currentCmd.substr(start);
+    }
+    return "";
 }
 
-std::string Parser::jump()
-{
-    return std::string();
+//----------------------------------------------------------------
+
+std::string Parser::jump() const {
+    if (getInstructionType() == instructionType::C_INSTRUCTION) {
+        auto semicolon_pos = currentCmd.find(';');
+        if (semicolon_pos != std::string::npos) {
+            return currentCmd.substr(semicolon_pos + 1);
+        }
+    }
+    return ""; // C-명령어가 아니거나 ';'가 없으면 빈 문자열 반환
 }
