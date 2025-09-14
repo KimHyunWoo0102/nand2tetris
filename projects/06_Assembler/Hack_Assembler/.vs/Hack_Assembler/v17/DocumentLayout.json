@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|solutionrelative:Hack_Assembler\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Parser.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|solutionrelative:Hack_Assembler\\Parser.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|solutionrelative:Hack_Assembler\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Parser.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -22,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -30,26 +30,26 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "main.cpp",
               "DocumentMoniker": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\main.cpp",
               "RelativeDocumentMoniker": "Hack_Assembler\\main.cpp",
               "ToolTip": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\main.cpp",
               "RelativeToolTip": "Hack_Assembler\\main.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-09-14T15:20:30.937Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Parser.cpp",
               "DocumentMoniker": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Parser.cpp",
               "RelativeDocumentMoniker": "Hack_Assembler\\Parser.cpp",
-              "ToolTip": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Parser.cpp",
-              "RelativeToolTip": "Hack_Assembler\\Parser.cpp",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAQwCEAAAAlAAAAAAAAAA==",
+              "ToolTip": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Parser.cpp*",
+              "RelativeToolTip": "Hack_Assembler\\Parser.cpp*",
+              "ViewState": "AgIAAAIAAAAAAAAAAIAywAwAAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-09-14T14:41:33.257Z",
               "EditorCaption": ""
@@ -62,7 +62,7 @@
               "RelativeDocumentMoniker": "Hack_Assembler\\Parser.h",
               "ToolTip": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Parser.h",
               "RelativeToolTip": "Hack_Assembler\\Parser.h",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAACQAAAAOAAAAAAAAAA==",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAACQAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-09-14T14:35:13.166Z",
               "EditorCaption": ""

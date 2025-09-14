@@ -10,7 +10,7 @@ Parser::Parser(std::string& filename)
 
 Parser::Parser(const char* filename)
 {
-    ifs.exceptions(std::ios::failbit | std::ios::badbit);
+    ifs.exceptions(std::ios::badbit);
 
     ifs.open(filename);
 }
