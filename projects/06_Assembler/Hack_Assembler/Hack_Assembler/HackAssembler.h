@@ -18,6 +18,7 @@
 class HackAssembler {
 	std::string filename;
 	Parser* p;
+	Code& code;
 	std::ofstream ofs;
 
 public:

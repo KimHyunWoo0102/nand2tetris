@@ -74,6 +74,9 @@ std::string Parser::dest() const {
         if (assign_pos != std::string::npos) {
             return currentCmd.substr(0, assign_pos);
         }
+        else {
+            return "null";
+        }
     }
     return ""; // C-명령어가 아니거나 '='가 없으면 빈 문자열 반환
 }
@@ -102,6 +105,9 @@ std::string Parser::jump() const {
         auto semicolon_pos = currentCmd.find(';');
         if (semicolon_pos != std::string::npos) {
             return currentCmd.substr(semicolon_pos + 1);
+        }
+        else {
+            return "null";
         }
     }
     return ""; // C-명령어가 아니거나 ';'가 없으면 빈 문자열 반환
