@@ -1,4 +1,0 @@
-@Add //Tasda
-    (Loop)
-
-A=D;JNE

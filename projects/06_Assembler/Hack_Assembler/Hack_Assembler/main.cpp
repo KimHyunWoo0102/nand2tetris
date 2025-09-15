@@ -1,11 +1,9 @@
-#include"Parser.h"
-#include"Code.h"
+#include"HackAssembler.h"
 #include<iostream>
 
 int main() {
 	try {
-		auto& code = Code::getInstance();
-		std::cout<<code.dest("DM");
+		HackAssembler assembler;
 	}
 	catch (std::exception& e) {
 		std::cerr << e.what();
