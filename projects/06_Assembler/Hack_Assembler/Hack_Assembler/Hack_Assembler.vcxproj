@@ -127,6 +127,7 @@
     <ClInclude Include="Parser.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Code.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Parser.cpp" />
   </ItemGroup>
