@@ -34,6 +34,10 @@ public:
 
 	std::string getCurrentCommend() const { return currentCmd; }
 	bool advance();
+	void reset() {
+		ifs.clear(); // 파일 스트림 상태 초기화
+		ifs.seekg(0, std::ios::beg);
+	}
 
 	//------------------------------------------
 

@@ -2,13 +2,14 @@
 //---------------------------------------------------------
 
 #include "Code.h"
+#include <exception>
 
 //---------------------------------------------------------
 //Mapping º¯¼ö
 //---------------------------------------------------------
 
 const std::map<std::string, std::string> Code::destMap = {
-	{"null", "000"}, {"M", "001"}, {"D", "010"}, {"DM", "011"},
+	{"", "000"}, {"M", "001"}, {"D", "010"}, {"DM", "011"},{"MD","011"},
 	{"A", "100"}, {"AM", "101"}, {"AD", "110"}, {"ADM", "111"}
 };
 
@@ -30,7 +31,7 @@ const std::map<std::string, std::string> Code::compMap = {
 //---------------------------------------------------------
 
 const std::map<std::string, std::string> Code::jumpMap = {
-	{"null", "000"}, {"JGT", "001"}, {"JEQ", "010"}, {"JGE", "011"},
+	{"", "000"}, {"JGT", "001"}, {"JEQ", "010"}, {"JGE", "011"},
 	{"JLT", "100"}, {"JNE", "101"}, {"JLE", "110"}, {"JMP", "111"}
 };
 
@@ -59,7 +60,8 @@ std::string Code::dest(const std::string& mnemonic)
 	}
 	else
 	{
-		throw std::exception("dest() : invalid mnemonic");
+		auto str = mnemonic + "dest() : invalid mnemonic";
+		throw std::exception(str.c_str());
 	}
 }
 

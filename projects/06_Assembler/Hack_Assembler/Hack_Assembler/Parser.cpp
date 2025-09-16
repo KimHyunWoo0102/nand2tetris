@@ -69,21 +69,23 @@ std::string Parser::symbol() const {
 // C instruction has (Dest = ) comp (;JOMP) () means optional
 
 std::string Parser::dest() const {
-    if (getInstructionType() == instructionType::C_INSTRUCTION) {
-        auto assign_pos = currentCmd.find('=');
-        if (assign_pos != std::string::npos) {
-            return currentCmd.substr(0, assign_pos);
-        }
-        else {
-            return "null";
-        }
+    // C-명령어만 처리
+    if (getInstructionType() != instructionType::C_INSTRUCTION) {
+        return "";
     }
-    return ""; // C-명령어가 아니거나 '='가 없으면 빈 문자열 반환
+
+    auto assign_pos = currentCmd.find('=');
+    if (assign_pos != std::string::npos) {
+        return currentCmd.substr(0, assign_pos);
+    }
+
+    return ""; // '='가 없으면 빈 문자열 반환
 }
 
 //----------------------------------------------------------------
 
 std::string Parser::comp() const {
+    // ... 기존 코드와 동일
     if (getInstructionType() == instructionType::C_INSTRUCTION) {
         auto assign_pos = currentCmd.find('=');
         auto semicolon_pos = currentCmd.find(';');
@@ -101,14 +103,15 @@ std::string Parser::comp() const {
 //----------------------------------------------------------------
 
 std::string Parser::jump() const {
-    if (getInstructionType() == instructionType::C_INSTRUCTION) {
-        auto semicolon_pos = currentCmd.find(';');
-        if (semicolon_pos != std::string::npos) {
-            return currentCmd.substr(semicolon_pos + 1);
-        }
-        else {
-            return "null";
-        }
+    // C-명령어만 처리
+    if (getInstructionType() != instructionType::C_INSTRUCTION) {
+        return "";
     }
-    return ""; // C-명령어가 아니거나 ';'가 없으면 빈 문자열 반환
+
+    auto semicolon_pos = currentCmd.find(';');
+    if (semicolon_pos != std::string::npos) {
+        return currentCmd.substr(semicolon_pos + 1);
+    }
+
+    return ""; // ';'가 없으면 빈 문자열 반환
 }
