@@ -1,4 +1,5 @@
 #include"Parser.h"
+#include"CodeWriter.h"
 
 int main() {
 	try {
@@ -6,15 +7,7 @@ int main() {
 
 		std::cin >> filename;
 
-		VMParser::Parser p(filename);
-
-		while (p.hasMoreLines()) {
-			p.advance();
-
-			std::cout << p.getCurrentCmd() << "\n";
-			std::cout << p.arg1() << '\n';
-			std::cout << p.arg2() << '\n';
-		}
+		CodeWriter cw(filename);
 	}
 	catch (std::exception& e) {
 		std::cerr << e.what();

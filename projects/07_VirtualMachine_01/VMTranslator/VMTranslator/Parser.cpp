@@ -12,23 +12,30 @@ const std::unordered_set<std::string> ARITHMETIC_COMMANDS = {
 };
 
 //---------------------------------------------------------------
-//constructor
+//constructor && destuctor
 //---------------------------------------------------------------
 
 
 VMParser::Parser::Parser(std::string& filename)
-	:ist(filename)
+	:ifs(filename)
 {
-	if (!ist.is_open()) {
+	if (!ifs.is_open()) {
 		throw std::runtime_error("Error : can't find file " + filename);
 	}
+}
+
+//---------------------------------------------------------------
+
+VMParser::Parser::~Parser()
+{
+	ifs.close();
 }
 
 //---------------------------------------------------------------
 //private helper
 //---------------------------------------------------------------
 
-VMParser::Parser::CMD_TYPE VMParser::Parser::getCommandType() const
+VMParser::CMD_TYPE VMParser::Parser::getCommandType() const
 {
 	std::string first_word;
 	auto space_pos = current_command.find(' ');
@@ -79,7 +86,7 @@ VMParser::Parser::CMD_TYPE VMParser::Parser::getCommandType() const
 
 bool VMParser::Parser::hasMoreLines()
 {
-	return ist.peek() != EOF;
+	return ifs.peek() != EOF;
 }
 
 //---------------------------------------------------------------
@@ -90,7 +97,7 @@ bool VMParser::Parser::hasMoreLines()
 
 void VMParser::Parser::advance()
 {
-	while (std::getline(ist, current_command)) {
+	while (std::getline(ifs, current_command)) {
 		//remove annotation
 
 		auto annotation_pos = current_command.find("//");

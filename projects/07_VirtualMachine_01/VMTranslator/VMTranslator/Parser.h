@@ -14,14 +14,12 @@
 
 namespace VMParser {
 
+	enum class CMD_TYPE {
+		C_ARITHMETIC, C_PUSH, C_POP, C_LABEL
+		, C_GOTO, C_IF, C_FUNCTION, C_RETURN, C_CALL
+	};
+
 	class Parser {
-
-		//----------------------------
-
-		enum class CMD_TYPE {
-			C_ARITHMETIC, C_PUSH, C_POP, C_LABEL
-			, C_GOTO, C_IF, C_FUNCTION, C_RETURN, C_CALL
-		};
 		
 		//-----------------------------
 		//private helper
@@ -32,7 +30,7 @@ namespace VMParser {
 		//----------------------------
 
 		std::string current_command;
-		std::ifstream ist;
+		std::ifstream ifs;
 		CMD_TYPE m_commandType;
 		std::string m_arg1;
 		int m_arg2;
@@ -44,6 +42,7 @@ namespace VMParser {
 		//----------------------------
 		
 		Parser(std::string& filename);
+		~Parser();
 
 		//----------------------------
 		//helper method
