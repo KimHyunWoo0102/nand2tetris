@@ -19,6 +19,6 @@ public:
 	~CodeWriter();
 
 	void writeArithmetic(std::string& command);
-	void writePushPop(VMParser::CMD_TYPE command, std::string segment, int index) {}
+	void writePushPop(VMParser::CMD_TYPE command, std::string segment, int index);
 
 };
