@@ -40,6 +40,6 @@ namespace VMParser {
 
 		bool hasMoreLines();
 		void advance();
-
+		std::string getCurrentCmd() const { return current_command; }
 	};
 }

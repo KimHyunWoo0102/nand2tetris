@@ -4,7 +4,7 @@ VMParser::Parser::Parser(std::string& filename)
 	:ist(filename)
 {
 	if (!ist.is_open()) {
-		throw std::runtime_error("Error : can't find file : " + filename);
+		throw std::runtime_error("Error : can't find file " + filename);
 	}
 }
 
