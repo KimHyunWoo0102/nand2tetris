@@ -1,6 +1,7 @@
 //Parser.cpp
 #include "Parser.h"
 #include <unordered_set> // 산술 명령어 그룹을 위해 추가
+#include <sstream> 
 
 //---------------------------------------------------------------
 //ARITHMETIC set for commandType method
@@ -14,6 +15,7 @@ const std::unordered_set<std::string> ARITHMETIC_COMMANDS = {
 //constructor
 //---------------------------------------------------------------
 
+
 VMParser::Parser::Parser(std::string& filename)
 	:ist(filename)
 {
@@ -23,48 +25,10 @@ VMParser::Parser::Parser(std::string& filename)
 }
 
 //---------------------------------------------------------------
-//helper method
+//private helper
 //---------------------------------------------------------------
 
-bool VMParser::Parser::hasMoreLines()
-{
-	return ist.peek() != EOF;
-}
-
-//---------------------------------------------------------------
-//advance remove the space
-//advance module must be used when hasMoreLines() return true
-//---------------------------------------------------------------
-
-
-void VMParser::Parser::advance()
-{
-	while (std::getline(ist, current_command)) {
-		auto annotation_pos = current_command.find("//");
-
-		if (annotation_pos != std::string::npos) {
-			current_command = current_command.substr(0, annotation_pos);
-		}
-		
-		auto first = current_command.find_first_not_of(" \t\n\r\f\v");
-
-		if (first == std::string::npos) {
-			continue;
-		}
-
-		auto last = current_command.find_last_not_of(" \t\n\r\f\v");
-
-		if (last != std::string::npos) {
-			current_command = current_command.substr(first, last - first + 1);
-		}
-
-		if (current_command.size())return;
-	}
-}
-
-//---------------------------------------------------------------
-
-VMParser::Parser::CMD_TYPE VMParser::Parser::commandType() const
+VMParser::Parser::CMD_TYPE VMParser::Parser::getCommandType() const
 {
 	std::string first_word;
 	auto space_pos = current_command.find(' ');
@@ -110,40 +74,68 @@ VMParser::Parser::CMD_TYPE VMParser::Parser::commandType() const
 }
 
 //---------------------------------------------------------------
+//helper method
+//---------------------------------------------------------------
 
-std::string VMParser::Parser::arg1() const
+bool VMParser::Parser::hasMoreLines()
 {
-	auto type = commandType();
-	if (type == CMD_TYPE::C_ARITHMETIC) {
-		return current_command;
-	}
-
-	if (type == CMD_TYPE::C_RETURN)throw std::runtime_error("RETURN cmd can return first agrs");
-
-	auto first = current_command.find(' ');
-	auto last = current_command.find_last_of(' ');
-
-	return current_command.substr(first + 1, last - first);
+	return ist.peek() != EOF;
 }
 
 //---------------------------------------------------------------
+//advance remove the space
+//advance module must be used when hasMoreLines() return true
+//---------------------------------------------------------------
 
-int VMParser::Parser::arg2() const
+
+void VMParser::Parser::advance()
 {
-	auto type = commandType();
-	auto last_space_pos = current_command.find_last_of(' ');
+	while (std::getline(ist, current_command)) {
+		//remove annotation
 
-	switch (type)
-	{
-	case VMParser::Parser::CMD_TYPE::C_PUSH:
-	case VMParser::Parser::CMD_TYPE::C_POP:
-	case VMParser::Parser::CMD_TYPE::C_FUNCTION:
-	case VMParser::Parser::CMD_TYPE::C_CALL:
-		return stoi(current_command.substr(last_space_pos + 1));
-	default:
-		throw std::runtime_error("agrs2() : invalid type!");
+		auto annotation_pos = current_command.find("//");
+
+		if (annotation_pos != std::string::npos) {
+			current_command = current_command.substr(0, annotation_pos);
+		}
+		
+		//remove space 
+
+		auto first = current_command.find_first_not_of(" \t\n\r\f\v");
+
+		if (first == std::string::npos) {
+			continue;
+		}//if empty line, then continue
+
+		auto last = current_command.find_last_not_of(" \t\n\r\f\v");
+
+		if (last != std::string::npos) {
+			current_command = current_command.substr(first, last - first + 1);
+		}
+
+		std::stringstream ss(current_command);
+
+		std::string cmd;
+		ss >> cmd;
+
+		auto cmd_type = getCommandType();
+
+		if (cmd_type == CMD_TYPE::C_ARITHMETIC) {
+			this->m_arg1 = current_command;
+		}
+		else if (m_commandType == CMD_TYPE::C_PUSH ||
+			m_commandType == CMD_TYPE::C_POP ||
+			m_commandType == CMD_TYPE::C_FUNCTION ||
+			m_commandType == CMD_TYPE::C_CALL) {
+			ss >> m_arg1;
+			ss >> m_arg2;
+		}
+		else { // C_LABEL, C_GOTO, C_IF
+			ss >> m_arg1;
+		}
+
+		if (current_command.size())return;
 	}
-	return 0;
 }
 
 //---------------------------------------------------------------

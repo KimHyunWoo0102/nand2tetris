@@ -23,10 +23,19 @@ namespace VMParser {
 			, C_GOTO, C_IF, C_FUNCTION, C_RETURN, C_CALL
 		};
 		
+		//-----------------------------
+		//private helper
+		//-----------------------------
+
+		CMD_TYPE getCommandType() const;
+
 		//----------------------------
 
 		std::string current_command;
 		std::ifstream ist;
+		CMD_TYPE m_commandType;
+		std::string m_arg1;
+		int m_arg2;
 
 		//----------------------------
 
@@ -43,11 +52,11 @@ namespace VMParser {
 		bool hasMoreLines();
 		void advance();
 		std::string getCurrentCmd() const { return current_command; }
-		CMD_TYPE commandType() const;
 
 		//----------------------------
 
-		std::string arg1() const;
-		int arg2() const;
+		CMD_TYPE commandType()const { return  m_commandType; }
+		std::string arg1() const { return m_arg1; }
+		int arg2() const { return m_arg2; }
 	};
 }
