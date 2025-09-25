@@ -12,6 +12,8 @@ int main() {
 			p.advance();
 
 			std::cout << p.getCurrentCmd() << "\n";
+			std::cout << p.arg1() << '\n';
+			std::cout << p.arg2() << '\n';
 		}
 	}
 	catch (std::exception& e) {

@@ -1,3 +1,2 @@
-hi oricon asdw //--sdaldw;akwldk
- 
-ssldak;wk
+push constant 100
+pop static 5

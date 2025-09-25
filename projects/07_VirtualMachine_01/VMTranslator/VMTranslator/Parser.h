@@ -37,9 +37,17 @@ namespace VMParser {
 		Parser(std::string& filename);
 
 		//----------------------------
+		//helper method
+		//----------------------------
 
 		bool hasMoreLines();
 		void advance();
 		std::string getCurrentCmd() const { return current_command; }
+		CMD_TYPE commandType() const;
+
+		//----------------------------
+
+		std::string arg1() const;
+		int arg2() const;
 	};
 }
