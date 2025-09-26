@@ -55,7 +55,7 @@ void CodeWriter::writePushPop(VMParser::CMD_TYPE command, std::string segment, i
 
 	switch(command){
 	case VMParser::CMD_TYPE::C_PUSH:
-		instruction = makePushASMCode(command, segment, index);
+		instruction = makePushASMCode(segment, index);
 		ofs << instruction;
 		return;
 
@@ -71,16 +71,13 @@ void CodeWriter::writePushPop(VMParser::CMD_TYPE command, std::string segment, i
 //helper method
 //-------------------------------------------------------------------
 
-std::string CodeWriter::makePushASMCode(VMParser::CMD_TYPE command, std::string segment, int index) {
+std::string CodeWriter::makePushASMCode(const std::string& segment, int index) {
 	// RAM[sp] = RAM[segment_base + index]
 	// sp++
 
 	std::stringstream ss;
 
-	//---------------------------------------------------
-	//RAM[seg + index]
-	//---------------------------------------------------
-
+	// load RAM[seg + index]
 	if (segment == "static") {
 		// TODO: 나중에 구현
 	}
@@ -101,20 +98,56 @@ std::string CodeWriter::makePushASMCode(VMParser::CMD_TYPE command, std::string 
 		ss << "D=M\n";
 	}
 
-	//--------------------------------------------------
-	//load to RAM[sp]
-	//--------------------------------------------------
+	// store to RAM[sp]
 
 	ss << "@SP\n";
 	ss << "A=M\n";
 	ss << "M=D\n";
 
-	//--------------------------------------------------
-	//sp++
-	//--------------------------------------------------
-
+	// sp++
 	ss << "@SP\n";
 	ss << "M=M+1\n";
+
+	return ss.str();
+}
+
+//-------------------------------------------------------------------
+
+std::string CodeWriter::makePopASMCode(const std::string& segment, int index)
+{
+	std::stringstream ss;
+	ss << "// pop " << segment << " " << index << "\n";
+
+	if (segment == "constant") {
+		// Case 1: constant (논리적 오류)
+		throw std::runtime_error("Error: 'pop constant' is an invalid command.");
+	}
+	else if (segment == "static") {
+		// Case 2: static (R13 불필요, 직접 처리)
+		// TODO : 추후 구현
+	}
+	else { 
+		// Case 3: local, argument, this, that, temp, pointer 등
+		// segment_base + index addr -> R13
+		std::string segSymbol = segmentMap.at(segment); // LCL, ARG 등
+		ss << "@" << segSymbol << "\n";
+		ss << "D=M\n";
+		ss << "@" << index << "\n";
+		ss << "D=D+A\n"; // D = target addr
+		ss << "@R13\n";
+		ss << "M=D\n";   
+
+		// 2. RAM[SP] -> D register
+		ss << "@SP\n";
+		ss << "M=M-1\n";
+		ss << "A=M\n";
+		ss << "D=M\n";
+
+		// 3. RAM[target addr] = D
+		ss << "@R13\n";
+		ss << "A=M\n";
+		ss << "M=D\n";
+	}
 
 	return ss.str();
 }
