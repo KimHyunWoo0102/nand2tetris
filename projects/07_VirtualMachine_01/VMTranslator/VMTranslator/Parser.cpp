@@ -35,49 +35,39 @@ VMParser::Parser::~Parser()
 //private helper
 //---------------------------------------------------------------
 
-VMParser::CMD_TYPE VMParser::Parser::getCommandType() const
+VMParser::CMD_TYPE VMParser::Parser::getCommandType(std::string& command) const
 {
-	std::string first_word;
-	auto space_pos = current_command.find(' ');
-
-	if (space_pos == std::string::npos) {
-		first_word = current_command;
-	}
-	else {
-		first_word = current_command.substr(0, space_pos);
-	}
-
-	if (ARITHMETIC_COMMANDS.count(first_word)) {
+	if (ARITHMETIC_COMMANDS.count(command)) {
 		return CMD_TYPE::C_ARITHMETIC;
 	}
 
-	if (first_word == "push") {
+	if (command == "push") {
 		return CMD_TYPE::C_PUSH;
 	}
-	if (first_word == "pop") {
+	if (command == "pop") {
 		return CMD_TYPE::C_POP;
 	}
-	if (first_word == "label") {
+	if (command == "label") {
 		return CMD_TYPE::C_LABEL;
 	}
-	if (first_word == "if-goto") {
+	if (command == "if-goto") {
 		return CMD_TYPE::C_IF;
 	}
-	if (first_word == "goto") {
+	if (command == "goto") {
 		return CMD_TYPE::C_GOTO;
 	}
-	if (first_word == "function") {
+	if (command == "function") {
 		return CMD_TYPE::C_FUNCTION;
 	}
-	if (first_word == "call") {
+	if (command == "call") {
 		return CMD_TYPE::C_CALL;
 	}
-	if (first_word == "return") {
+	if (command == "return") {
 		return CMD_TYPE::C_RETURN;
 	}
 
 	//invalid VM code
-	throw std::runtime_error("알 수 없는 명령어입니다: " + first_word);
+	throw std::runtime_error("알 수 없는 명령어입니다: " + command);
 }
 
 //---------------------------------------------------------------
@@ -125,9 +115,9 @@ void VMParser::Parser::advance()
 		std::string cmd;
 		ss >> cmd;
 
-		auto cmd_type = getCommandType();
+		m_commandType = getCommandType(cmd);
 
-		if (cmd_type == CMD_TYPE::C_ARITHMETIC) {
+		if (m_commandType == CMD_TYPE::C_ARITHMETIC) {
 			this->m_arg1 = current_command;
 		}
 		else if (m_commandType == CMD_TYPE::C_PUSH ||

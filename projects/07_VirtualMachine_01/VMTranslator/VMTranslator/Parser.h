@@ -25,7 +25,7 @@ namespace VMParser {
 		//private helper
 		//-----------------------------
 
-		CMD_TYPE getCommandType() const;
+		CMD_TYPE getCommandType(std::string& command) const;
 
 		//----------------------------
 
