@@ -1,9 +1,8 @@
 #include "CodeWriter.h"
-#include<map>
 #include<sstream>
 
 //-------------------------------------------------------------------
-// Maps VM memory segments to their corresponding assembly symbols.
+// Maps VM memory sents to their corresponding assembly symbols.
 //------------------------------------------------------------------- 
 
 static const std::map<std::string, std::string>segmentMap = {
@@ -12,7 +11,6 @@ static const std::map<std::string, std::string>segmentMap = {
 	{"this","THIS"},
 	{"that","THAT"},
 };
-
 
 //-------------------------------------------------------------------
 //constructor && destructor
@@ -32,6 +30,25 @@ CodeWriter::CodeWriter(std::string& filename)
 	if (!ofs.is_open()) {
 		throw std::runtime_error("CodeWriter(): Failed to open output file " + out_file_name);
 	}
+
+	// Arithmetic Command Dispatch Table Initialization
+	//================================================================
+
+	// 이항 연산자 매핑
+	arithmeticMap["add"] = [this]() { return this->makeAddASMCode(); };
+	arithmeticMap["sub"] = [this]() { return this->makeSubASMCode(); };
+	arithmeticMap["and"] = [this]() { return this->makeAndASMCode(); };
+	arithmeticMap["or"] = [this]() { return this->makeOrASMCode(); };
+
+	// 단항 연산자 매핑
+	arithmeticMap["neg"] = [this]() { return this->makeNegASMCode(); };
+	arithmeticMap["not"] = [this]() { return this->makeNotASMCode(); };
+
+	// 비교 연산자 매핑
+	arithmeticMap["eq"] = [this]() { return this->makeEqASMCode(); };
+	arithmeticMap["gt"] = [this]() { return this->makeGTASMCode(); };
+	arithmeticMap["lt"] = [this]() { return this->makeLTASMCode(); };
+
 }
 
 //-------------------------------------------------------------------
@@ -42,11 +59,82 @@ CodeWriter::~CodeWriter()
 }
 
 //-------------------------------------------------------------------
+// writeArithmetic
+//-------------------------------------------------------------------
 
 void CodeWriter::writeArithmetic(std::string& command)
 {
+
+	
 }
 
+//-------------------------------------------------------------------
+// helper method
+//-------------------------------------------------------------------
+
+std::string CodeWriter::makeAddASMCode()
+{
+	return std::string();
+}
+
+//-------------------------------------------------------------------
+
+std::string CodeWriter::makeSubASMCode()
+{
+	return std::string();
+}
+
+//-------------------------------------------------------------------
+
+std::string CodeWriter::makeAndASMCode()
+{
+	return std::string();
+}
+
+//-------------------------------------------------------------------
+
+std::string CodeWriter::makeOrASMCode()
+{
+	return std::string();
+}
+
+//-------------------------------------------------------------------
+
+std::string CodeWriter::makeNegASMCode()
+{
+	return std::string();
+}
+
+//-------------------------------------------------------------------
+
+std::string CodeWriter::makeNotASMCode()
+{
+	return std::string();
+}
+
+//-------------------------------------------------------------------
+
+std::string CodeWriter::makeEqASMCode()
+{
+	return std::string();
+}
+
+//-------------------------------------------------------------------
+
+std::string CodeWriter::makeGTASMCode()
+{
+	return std::string();
+}
+
+//-------------------------------------------------------------------
+
+std::string CodeWriter::makeLTASMCode()
+{
+	return std::string();
+}
+
+//-------------------------------------------------------------------
+// writePushPop
 //-------------------------------------------------------------------
 
 void CodeWriter::writePushPop(VMParser::CMD_TYPE command, std::string segment, int index)
@@ -60,7 +148,9 @@ void CodeWriter::writePushPop(VMParser::CMD_TYPE command, std::string segment, i
 		return;
 
 	case VMParser::CMD_TYPE::C_POP:
-		return;
+		instruction = makePopASMCode(segment, index);
+		ofs << instruction;
+		return; // return 추가
 
 	default:
 		throw std::runtime_error("writePushPop() : invalid command ");
@@ -68,7 +158,7 @@ void CodeWriter::writePushPop(VMParser::CMD_TYPE command, std::string segment, i
 }
 
 //-------------------------------------------------------------------
-//helper method
+// helper method
 //-------------------------------------------------------------------
 
 std::string CodeWriter::makePushASMCode(const std::string& segment, int index) {
@@ -100,13 +190,7 @@ std::string CodeWriter::makePushASMCode(const std::string& segment, int index) {
 
 	// store to RAM[sp]
 
-	ss << "@SP\n";
-	ss << "A=M\n";
-	ss << "M=D\n";
-
-	// sp++
-	ss << "@SP\n";
-	ss << "M=M+1\n";
+	ss << pushDToStack();
 
 	return ss.str();
 }
@@ -138,10 +222,7 @@ std::string CodeWriter::makePopASMCode(const std::string& segment, int index)
 		ss << "M=D\n";   
 
 		// 2. RAM[SP] -> D register
-		ss << "@SP\n";
-		ss << "M=M-1\n";
-		ss << "A=M\n";
-		ss << "D=M\n";
+		ss << popStackToD();
 
 		// 3. RAM[target addr] = D
 		ss << "@R13\n";
@@ -151,3 +232,18 @@ std::string CodeWriter::makePopASMCode(const std::string& segment, int index)
 
 	return ss.str();
 }
+
+//-------------------------------------------------------------------
+
+std::string CodeWriter::popStackToD()
+{
+	return "@SP\nM=M-1\nA=M\nD=M\n";
+}
+
+//-------------------------------------------------------------------
+
+std::string CodeWriter::pushDToStack()
+{
+	return "@SP\nA=M\nM=D\n@SP\nM=M+1\n";
+}
+
