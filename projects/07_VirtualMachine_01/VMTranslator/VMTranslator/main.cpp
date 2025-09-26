@@ -7,7 +7,13 @@ int main() {
 
 		std::cin >> filename;
 
+		VMParser::Parser p(filename);
+		p.advance();
+
 		CodeWriter cw(filename);
+
+		cw.writePushPop(p.commandType(), p.arg1(), p.arg2());
+
 	}
 	catch (std::exception& e) {
 		std::cerr << e.what();
