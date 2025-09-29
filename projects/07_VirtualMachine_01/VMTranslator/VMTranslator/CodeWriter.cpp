@@ -31,6 +31,8 @@ CodeWriter::CodeWriter(std::string& filename)
 		throw std::runtime_error("CodeWriter(): Failed to open output file " + out_file_name);
 	}
 
+	//----------------------------------------------------------------
+	ofs << "@256\nD=A\n@SP\nM=D\n";
 	// Arithmetic Command Dispatch Table Initialization
 	//================================================================
 
@@ -64,7 +66,13 @@ CodeWriter::~CodeWriter()
 
 void CodeWriter::writeArithmetic(std::string& command)
 {
-
+	if (arithmeticMap.count(command)) {
+		ofs << "//" << command << '\n';
+		ofs << arithmeticMap.at(command)();
+	}
+	else {
+		throw std::runtime_error("writeArithmetic() : Invalid command " + command);
+	}
 	
 }
 
@@ -74,63 +82,182 @@ void CodeWriter::writeArithmetic(std::string& command)
 
 std::string CodeWriter::makeAddASMCode()
 {
-	return std::string();
+	std::stringstream ss;
+	ss << popStackToD();
+	ss << "@SP\n";
+	ss << "A=M-1\n";
+	ss << "M=M+D\n";
+	return ss.str();
 }
 
 //-------------------------------------------------------------------
 
 std::string CodeWriter::makeSubASMCode()
 {
-	return std::string();
+	std::stringstream ss;
+	ss << popStackToD();
+	ss << "@SP\n";
+	ss << "A=M-1\n";
+	ss << "M=M-D\n";
+	return ss.str();
 }
 
 //-------------------------------------------------------------------
 
 std::string CodeWriter::makeAndASMCode()
 {
-	return std::string();
+	std::stringstream ss;
+	ss << popStackToD();
+	ss << "@SP\n";
+	ss << "A=M-1\n";
+	ss << "M=M&D\n";
+	return ss.str();
 }
 
 //-------------------------------------------------------------------
 
 std::string CodeWriter::makeOrASMCode()
 {
-	return std::string();
+	std::stringstream ss;
+	ss << popStackToD();
+	ss << "@SP\n";
+	ss << "A=M-1\n";
+	ss << "M=M|D\n";
+	return ss.str();
 }
 
 //-------------------------------------------------------------------
 
 std::string CodeWriter::makeNegASMCode()
 {
-	return std::string();
+	std::stringstream ss;
+	ss << "@SP\n";
+	ss << "A=M-1\n";
+	ss << "M=-M\n";
+	return ss.str();
 }
 
 //-------------------------------------------------------------------
 
 std::string CodeWriter::makeNotASMCode()
 {
-	return std::string();
+	std::stringstream ss;
+	ss << "@SP\n";
+	ss << "A=M-1\n";
+	ss << "M=!M\n";
+	return ss.str();
 }
 
 //-------------------------------------------------------------------
 
 std::string CodeWriter::makeEqASMCode()
 {
-	return std::string();
+	// 1. 이번 'eq' 연산에서 사용할 고유 ID를 하나만 생성합니다.
+	std::string unique_id = std::to_string(label_counter);
+	std::string trueLabel = "EQ_TRUE_" + unique_id;
+	std::string endLabel = "EQ_END_" + unique_id;
+	label_counter++; 
+
+	std::stringstream ss;
+	ss << "// eq\n";
+
+	// D=x-y
+	ss << popStackToD();      // D = y
+	ss << "@SP\n";
+	ss << "A=M-1\n";          // A -> x 주소
+	ss << "D=M-D\n";          // D = x - y
+
+	ss << "@" << trueLabel << "\n";
+	ss << "D;JEQ\n";          // if (x == y) goto EQ_TRUE_...
+
+	ss << "@SP\n";
+	ss << "A=M-1\n";
+	ss << "M=0\n";            
+	ss << "@" << endLabel << "\n";
+	ss << "0;JMP\n";        
+
+	ss << "(" << trueLabel << ")\n";
+	ss << "@SP\n";
+	ss << "A=M-1\n";
+	ss << "M=-1\n";           
+
+	ss << "(" << endLabel << ")\n";
+
+	return ss.str();
 }
 
 //-------------------------------------------------------------------
 
 std::string CodeWriter::makeGTASMCode()
 {
-	return std::string();
+	std::string unique_id = std::to_string(label_counter);
+	std::string trueLabel = "GT_TRUE_" + unique_id;
+	std::string endLabel = "GT_END_" + unique_id;
+	label_counter++;
+
+	std::stringstream ss;
+	ss << "// GT\n";
+
+	// D=x-y
+	ss << popStackToD();      // D = y
+	ss << "@SP\n";
+	ss << "A=M-1\n";          // A -> x 주소
+	ss << "D=M-D\n";          // D = x - y
+
+	ss << "@" << trueLabel << "\n";
+	ss << "D;JGT\n";          // if (x < y) goto EQ_TRUE_...
+
+	ss << "@SP\n";
+	ss << "A=M-1\n";
+	ss << "M=0\n";
+	ss << "@" << endLabel << "\n";
+	ss << "0;JMP\n";
+
+	ss << "(" << trueLabel << ")\n";
+	ss << "@SP\n";
+	ss << "A=M-1\n";
+	ss << "M=-1\n";
+
+	ss << "(" << endLabel << ")\n";
+
+	return ss.str();
 }
 
 //-------------------------------------------------------------------
 
 std::string CodeWriter::makeLTASMCode()
 {
-	return std::string();
+	std::string unique_id = std::to_string(label_counter);
+	std::string trueLabel = "LT_TRUE_" + unique_id;
+	std::string endLabel = "LT_END_" + unique_id;
+	label_counter++;
+
+	std::stringstream ss;
+	ss << "// LT\n";
+
+	// D=x-y
+	ss << popStackToD();      // D = y
+	ss << "@SP\n";
+	ss << "A=M-1\n";          // A -> x 주소
+	ss << "D=M-D\n";          // D = x - y
+
+	ss << "@" << trueLabel << "\n";
+	ss << "D;JLT\n";          // if (x < y) goto EQ_TRUE_...
+
+	ss << "@SP\n";
+	ss << "A=M-1\n";
+	ss << "M=0\n";
+	ss << "@" << endLabel << "\n";
+	ss << "0;JMP\n";
+
+	ss << "(" << trueLabel << ")\n";
+	ss << "@SP\n";
+	ss << "A=M-1\n";
+	ss << "M=-1\n";
+
+	ss << "(" << endLabel << ")\n";
+
+	return ss.str();
 }
 
 //-------------------------------------------------------------------

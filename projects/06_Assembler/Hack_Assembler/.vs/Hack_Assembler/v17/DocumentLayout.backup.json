@@ -1,33 +1,33 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\",
+  "WorkspaceRootPath": "C:\\Users\\hyunwoo\\source\\repos\\nand2tetris\\projects\\06_Assembler\\Hack_Assembler\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\HackAssembler.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|solutionrelative:Hack_Assembler\\HackAssembler.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Parser.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|solutionrelative:Hack_Assembler\\Parser.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Parser.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|C:\\Users\\hyunwoo\\source\\repos\\nand2tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Parser.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|solutionrelative:Hack_Assembler\\Parser.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|C:\\Users\\hyunwoo\\source\\repos\\nand2tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Parser.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|solutionrelative:Hack_Assembler\\Parser.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|C:\\Users\\hyunwoo\\source\\repos\\nand2tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\HackAssembler.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|solutionrelative:Hack_Assembler\\HackAssembler.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|C:\\Users\\hyunwoo\\source\\repos\\nand2tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|solutionrelative:Hack_Assembler\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\HackAssembler.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|C:\\Users\\hyunwoo\\source\\repos\\nand2tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\HackAssembler.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|solutionrelative:Hack_Assembler\\HackAssembler.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Code.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|C:\\Users\\hyunwoo\\source\\repos\\nand2tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Code.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|solutionrelative:Hack_Assembler\\Code.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Code.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|C:\\Users\\hyunwoo\\source\\repos\\nand2tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Code.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|solutionrelative:Hack_Assembler\\Code.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
@@ -37,13 +37,13 @@
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\utility||{3B902123-F8A7-4915-9F01-361F908088D0}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{27B2C2BC-54AA-4E6A-B202-EACDA282D093}|Hack_Assembler\\Hack_Assembler.vcxproj|C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\2022\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.44.35207\\INCLUDE\\MEMORY||{3B902123-F8A7-4915-9F01-361F908088D0}|"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\xmemory||{3B902123-F8A7-4915-9F01-361F908088D0}|"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\xstring||{3B902123-F8A7-4915-9F01-361F908088D0}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\memory||{3B902123-F8A7-4915-9F01-361F908088D0}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -53,54 +53,17 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 3,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "xmemory",
-              "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\xmemory",
-              "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\xmemory",
-              "ViewState": "AgIAAGcFAAAAAAAAAAA3wHcFAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-09-16T13:26:08.791Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "utility",
-              "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\utility",
-              "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\utility",
-              "ViewState": "AgIAAPUCAAAAAAAAAAAYwAQDAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-09-16T12:35:45.791Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Code.cpp",
-              "DocumentMoniker": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Code.cpp",
-              "RelativeDocumentMoniker": "Hack_Assembler\\Code.cpp",
-              "ToolTip": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Code.cpp",
-              "RelativeToolTip": "Hack_Assembler\\Code.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFUAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-09-15T12:05:11.278Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "Parser.h",
-              "DocumentMoniker": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Parser.h",
+              "DocumentMoniker": "C:\\Users\\hyunwoo\\source\\repos\\nand2tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Parser.h",
               "RelativeDocumentMoniker": "Hack_Assembler\\Parser.h",
-              "ToolTip": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Parser.h",
+              "ToolTip": "C:\\Users\\hyunwoo\\source\\repos\\nand2tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Parser.h",
               "RelativeToolTip": "Hack_Assembler\\Parser.h",
-              "ViewState": "AgIAAA4AAAAAAAAAAAA3wB4AAAAHAAAAAAAAAA==",
+              "ViewState": "AgIAABQAAAAAAAAAAAA3wCMAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-09-14T14:35:13.166Z",
               "EditorCaption": ""
@@ -109,22 +72,21 @@
               "$type": "Document",
               "DocumentIndex": 3,
               "Title": "main.cpp",
-              "DocumentMoniker": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\main.cpp",
+              "DocumentMoniker": "C:\\Users\\hyunwoo\\source\\repos\\nand2tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\main.cpp",
               "RelativeDocumentMoniker": "Hack_Assembler\\main.cpp",
-              "ToolTip": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\main.cpp",
+              "ToolTip": "C:\\Users\\hyunwoo\\source\\repos\\nand2tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\main.cpp",
               "RelativeToolTip": "Hack_Assembler\\main.cpp",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-09-14T15:20:30.937Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-14T15:20:30.937Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "HackAssembler.h",
-              "DocumentMoniker": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\HackAssembler.h",
+              "DocumentMoniker": "C:\\Users\\hyunwoo\\source\\repos\\nand2tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\HackAssembler.h",
               "RelativeDocumentMoniker": "Hack_Assembler\\HackAssembler.h",
-              "ToolTip": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\HackAssembler.h",
+              "ToolTip": "C:\\Users\\hyunwoo\\source\\repos\\nand2tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\HackAssembler.h",
               "RelativeToolTip": "Hack_Assembler\\HackAssembler.h",
               "ViewState": "AgIAABUAAAAAAAAAAAAAACoAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
@@ -133,10 +95,61 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 0,
+              "Title": "Parser.cpp",
+              "DocumentMoniker": "C:\\Users\\hyunwoo\\source\\repos\\nand2tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Parser.cpp",
+              "RelativeDocumentMoniker": "Hack_Assembler\\Parser.cpp",
+              "ToolTip": "C:\\Users\\hyunwoo\\source\\repos\\nand2tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Parser.cpp",
+              "RelativeToolTip": "Hack_Assembler\\Parser.cpp",
+              "ViewState": "AgIAAA0AAAAAAAAAAAA0wBwAAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-09-14T14:41:33.257Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Code.cpp",
+              "DocumentMoniker": "C:\\Users\\hyunwoo\\source\\repos\\nand2tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Code.cpp",
+              "RelativeDocumentMoniker": "Hack_Assembler\\Code.cpp",
+              "ToolTip": "C:\\Users\\hyunwoo\\source\\repos\\nand2tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Code.cpp",
+              "RelativeToolTip": "Hack_Assembler\\Code.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-09-15T12:05:11.278Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "utility",
+              "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\utility",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\utility",
+              "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\utility",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\utility",
+              "ViewState": "AgIAAPUCAAAAAAAAAAAYwAQDAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-09-16T12:35:45.791Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "xmemory",
+              "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\xmemory",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\xmemory",
+              "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\xmemory",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\xmemory",
+              "ViewState": "AgIAAGcFAAAAAAAAAAA3wHcFAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-09-16T13:26:08.791Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
               "Title": "xstring",
               "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\xstring",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\xstring",
               "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\xstring",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\xstring",
               "ViewState": "AgIAAPkLAAAAAAAAAAA3wAkMAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2025-09-16T13:26:11.462Z"
@@ -146,62 +159,46 @@
               "DocumentIndex": 7,
               "Title": "Rect.asm",
               "DocumentMoniker": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\rect\\Rect.asm",
-              "RelativeDocumentMoniker": "..\\rect\\Rect.asm",
               "ToolTip": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\rect\\Rect.asm",
-              "RelativeToolTip": "..\\rect\\Rect.asm",
               "ViewState": "AgIAAAQAAAAAAAAAAAA3wCMAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-09-16T13:41:37.718Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-16T13:41:37.718Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
               "Title": "Code.h",
-              "DocumentMoniker": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Code.h",
+              "DocumentMoniker": "C:\\Users\\hyunwoo\\source\\repos\\nand2tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Code.h",
               "RelativeDocumentMoniker": "Hack_Assembler\\Code.h",
-              "ToolTip": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Code.h",
+              "ToolTip": "C:\\Users\\hyunwoo\\source\\repos\\nand2tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Code.h",
               "RelativeToolTip": "Hack_Assembler\\Code.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-09-14T16:12:23.15Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-14T16:12:23.15Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
               "Title": "HackAssembler.cpp",
-              "DocumentMoniker": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\HackAssembler.cpp",
+              "DocumentMoniker": "C:\\Users\\hyunwoo\\source\\repos\\nand2tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\HackAssembler.cpp",
               "RelativeDocumentMoniker": "Hack_Assembler\\HackAssembler.cpp",
-              "ToolTip": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\HackAssembler.cpp",
+              "ToolTip": "C:\\Users\\hyunwoo\\source\\repos\\nand2tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\HackAssembler.cpp",
               "RelativeToolTip": "Hack_Assembler\\HackAssembler.cpp",
               "ViewState": "AgIAAEUAAAAAAAAAAAAAAEoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-09-15T13:13:42.015Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-15T13:13:42.015Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 11,
               "Title": "memory",
               "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\memory",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\memory",
               "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\memory",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\memory",
               "ViewState": "AgIAALUGAAAAAAAAAAAswMcGAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2025-09-16T12:30:12.629Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Parser.cpp",
-              "DocumentMoniker": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Parser.cpp",
-              "RelativeDocumentMoniker": "Hack_Assembler\\Parser.cpp",
-              "ToolTip": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Parser.cpp",
-              "RelativeToolTip": "Hack_Assembler\\Parser.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-09-14T14:41:33.257Z",
-              "EditorCaption": ""
             }
           ]
         }

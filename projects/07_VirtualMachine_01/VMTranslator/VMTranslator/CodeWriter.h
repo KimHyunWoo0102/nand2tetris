@@ -22,7 +22,7 @@ class CodeWriter {
 	std::map<std::string, ArithmeticGenerator> arithmeticMap;
 
 	std::ofstream ofs;
-
+	size_t label_counter = 0;
 
 	//write Arithmetic helper method
 	//이항 연산자
