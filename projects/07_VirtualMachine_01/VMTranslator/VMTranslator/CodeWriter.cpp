@@ -56,6 +56,11 @@ CodeWriter::CodeWriter(const std::string& inputVmFilename)
 
 CodeWriter::~CodeWriter()
 {
+    ofs << "\n// Infinite loop to end the program\n"
+        << "(END)\n"
+        << "@END\n"
+        << "0;JMP\n";
+
     ofs.close();
 }
 
@@ -353,7 +358,7 @@ std::string CodeWriter::makePopASMCode(const std::string& segment, int index)
             << "M=D\n";
     }
 
-    else {// local, argument
+    else {// local, argument ,this, that
         std::string segSymbol = segmentMap.at(segment);
         ss  << "@" << segSymbol << "\n"
             << "D=M\n"

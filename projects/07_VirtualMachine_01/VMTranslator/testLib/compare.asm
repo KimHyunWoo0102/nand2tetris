@@ -6,7 +6,7 @@ M=D
 
 // push constant 5
 @5
-D=A
+D=AW
 
 @SP
 A=M
