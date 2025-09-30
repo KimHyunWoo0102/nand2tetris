@@ -8,6 +8,8 @@
 static const std::map<std::string, std::string> segmentMap = {
     {"local",    "LCL"},
     {"argument", "ARG"},
+    {"this",    "THIS"},
+    {"that",    "THAT"}
 };
 
 //-------------------------------------------------------------------
@@ -284,7 +286,7 @@ std::string CodeWriter::makePushASMCode(const std::string& segment, int index)
 
     if (segment == "static") {
         ss  << "@" << currentFileName << "." << index << '\n'
-            << "D=A\n\n";
+            << "D=M\n\n";
     }
     else if (segment == "constant") {
         ss  << "@" << index << "\n"
@@ -325,36 +327,33 @@ std::string CodeWriter::makePopASMCode(const std::string& segment, int index)
         throw std::runtime_error("Error: 'pop constant' is an invalid command.");
     }
     else if (segment == "static") {
-        // D 레지스터에 스택 값을 pop
-        ss << popStackToD()
+        ss  << popStackToD()
             // FileName.index 변수에 D 값을 저장
             << "@" << currentFileName << "." << index << "\n"
             << "M=D\n";
     }
     else if (segment == "pointer") {
-        // D 레지스터에 스택 값을 pop
-        ss << popStackToD()
+        ss  << popStackToD()
             // index가 0이면 THIS, 1이면 THAT에 D 값을 저장
             << (index == 0 ? "@THIS\n" : "@THAT\n")
             << "M=D\n";
     }
     else if (segment == "temp") {
-        // 1. 목적지 주소(R5 + index)를 계산해서 R13에 임시 저장
-        ss << "@R5\n"
+        ss  << "@R5\n"
             << "D=A\n"
             << "@" << index << "\n"
             << "D=D+A\n"
             << "@R13\n"
             << "M=D\n"
-            // 2. 스택 값을 D 레지스터에 pop
+
             << popStackToD()
-            // 3. R13에 저장된 주소로 찾아가 D 값을 저장
+
             << "@R13\n"
             << "A=M\n"
             << "M=D\n";
     }
 
-    else {
+    else {// local, argument
         std::string segSymbol = segmentMap.at(segment);
         ss  << "@" << segSymbol << "\n"
             << "D=M\n"
