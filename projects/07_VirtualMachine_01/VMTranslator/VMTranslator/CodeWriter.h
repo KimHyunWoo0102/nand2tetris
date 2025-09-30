@@ -24,6 +24,8 @@ class CodeWriter {
 	std::ofstream ofs;
 	size_t label_counter = 0;
 
+	std::string currentFileName;
+
 	//write Arithmetic helper method
 	//이항 연산자
 	std::string makeAddASMCode();
@@ -48,9 +50,11 @@ class CodeWriter {
 	std::string pushDToStack();
 
 public:
-	CodeWriter(std::string& filename);
+	CodeWriter(const std::string& inputVmFilename);
 	~CodeWriter();
 
+	void writeInit();
+	void setFileName(const std::string& vmFilename);
 	void writeArithmetic(std::string& command);
 	void writePushPop(VMParser::CMD_TYPE command, std::string segment, int index);
 

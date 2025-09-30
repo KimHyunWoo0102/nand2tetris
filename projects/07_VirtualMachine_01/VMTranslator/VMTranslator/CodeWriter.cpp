@@ -4,34 +4,37 @@
 //-------------------------------------------------------------------
 // Maps VM memory segments to their corresponding assembly symbols.
 //-------------------------------------------------------------------
+
 static const std::map<std::string, std::string> segmentMap = {
     {"local",    "LCL"},
     {"argument", "ARG"},
-    {"this",     "THIS"},
-    {"that",     "THAT"},
 };
 
 //-------------------------------------------------------------------
 // constructor && destructor
 //-------------------------------------------------------------------
-CodeWriter::CodeWriter(std::string& filename)
-{
-    auto dot_pos = filename.find_last_of('.');
-    if (dot_pos == std::string::npos)
-        throw std::runtime_error("CodeWriter() : invalid filename " + filename);
 
-    auto out_file_name = filename.substr(0, dot_pos) + ".asm";
+CodeWriter::CodeWriter(const std::string& inputVmFilename)
+{
+    // --- 1. 출력 파일(.asm) 경로 설정 ---
+    auto dot_pos = inputVmFilename.find_last_of('.');
+    if (dot_pos == std::string::npos)
+        throw std::runtime_error("Invalid vm filename: " + inputVmFilename);
+
+    std::string out_file_name = inputVmFilename.substr(0, dot_pos) + ".asm";
     ofs.open(out_file_name);
     if (!ofs.is_open()) {
-        throw std::runtime_error("CodeWriter(): Failed to open output file " + out_file_name);
+        throw std::runtime_error("Failed to open output file: " + out_file_name);
     }
 
-    // bootstrap code
-    ofs << "// bootstrap code\n"
-        << "@256\n"
-        << "D=A\n"
-        << "@SP\n"
-        << "M=D\n\n";
+    // --- 2. static 변수용 파일 이름 설정 ---
+    auto sep_pos = inputVmFilename.find_last_of("/\\");
+    if (sep_pos == std::string::npos) {
+        currentFileName = inputVmFilename.substr(0, dot_pos);
+    }
+    else {
+        currentFileName = inputVmFilename.substr(sep_pos + 1, dot_pos - sep_pos - 1);
+    }
 
     // Arithmetic command mapping
     arithmeticMap["add"] = [this]() { return this->makeAddASMCode(); };
@@ -47,14 +50,29 @@ CodeWriter::CodeWriter(std::string& filename)
     arithmeticMap["lt"] = [this]() { return this->makeLTASMCode(); };
 }
 
+//-------------------------------------------------------------------
+
 CodeWriter::~CodeWriter()
 {
     ofs.close();
 }
 
 //-------------------------------------------------------------------
+
+void CodeWriter::writeInit()
+{
+    // bootstrap code
+    ofs << "// bootstrap code\n"
+        << "@256\n"
+        << "D=A\n"
+        << "@SP\n"
+        << "M=D\n\n";
+}
+
+//-------------------------------------------------------------------
 // writeArithmetic
 //-------------------------------------------------------------------
+
 void CodeWriter::writeArithmetic(std::string& command)
 {
     if (arithmeticMap.count(command)) {
@@ -69,6 +87,7 @@ void CodeWriter::writeArithmetic(std::string& command)
 //-------------------------------------------------------------------
 // helper methods for arithmetic
 //-------------------------------------------------------------------
+
 std::string CodeWriter::makeAddASMCode()
 {
     std::stringstream ss;
@@ -78,6 +97,8 @@ std::string CodeWriter::makeAddASMCode()
         << "M=M+D\n\n";
     return ss.str();
 }
+
+//-------------------------------------------------------------------
 
 std::string CodeWriter::makeSubASMCode()
 {
@@ -89,6 +110,8 @@ std::string CodeWriter::makeSubASMCode()
     return ss.str();
 }
 
+//-------------------------------------------------------------------
+
 std::string CodeWriter::makeAndASMCode()
 {
     std::stringstream ss;
@@ -98,6 +121,8 @@ std::string CodeWriter::makeAndASMCode()
         << "M=M&D\n\n";
     return ss.str();
 }
+
+//-------------------------------------------------------------------
 
 std::string CodeWriter::makeOrASMCode()
 {
@@ -109,6 +134,8 @@ std::string CodeWriter::makeOrASMCode()
     return ss.str();
 }
 
+//-------------------------------------------------------------------
+
 std::string CodeWriter::makeNegASMCode()
 {
     std::stringstream ss;
@@ -118,6 +145,8 @@ std::string CodeWriter::makeNegASMCode()
     return ss.str();
 }
 
+//-------------------------------------------------------------------
+
 std::string CodeWriter::makeNotASMCode()
 {
     std::stringstream ss;
@@ -126,6 +155,8 @@ std::string CodeWriter::makeNotASMCode()
         << "M=!M\n\n";
     return ss.str();
 }
+
+//-------------------------------------------------------------------
 
 std::string CodeWriter::makeEqASMCode()
 {
@@ -157,6 +188,8 @@ std::string CodeWriter::makeEqASMCode()
     return ss.str();
 }
 
+//-------------------------------------------------------------------
+
 std::string CodeWriter::makeGTASMCode()
 {
     std::string unique_id = std::to_string(label_counter++);
@@ -186,6 +219,8 @@ std::string CodeWriter::makeGTASMCode()
         << "(" << endLabel << ")\n\n";
     return ss.str();
 }
+
+//-------------------------------------------------------------------
 
 std::string CodeWriter::makeLTASMCode()
 {
@@ -220,6 +255,7 @@ std::string CodeWriter::makeLTASMCode()
 //-------------------------------------------------------------------
 // writePushPop
 //-------------------------------------------------------------------
+
 void CodeWriter::writePushPop(VMParser::CMD_TYPE command, std::string segment, int index)
 {
     std::string instruction;
@@ -240,21 +276,34 @@ void CodeWriter::writePushPop(VMParser::CMD_TYPE command, std::string segment, i
 //-------------------------------------------------------------------
 // helper methods for push/pop
 //-------------------------------------------------------------------
+
 std::string CodeWriter::makePushASMCode(const std::string& segment, int index)
 {
     std::stringstream ss;
     ss << "// push " << segment << " " << index << "\n";
 
     if (segment == "static") {
-        // TODO
+        ss  << "@" << currentFileName << "." << index << '\n'
+            << "D=A\n\n";
     }
     else if (segment == "constant") {
-        ss << "@" << index << "\n"
+        ss  << "@" << index << "\n"
             << "D=A\n\n";
+    }
+    else if (segment == "pointer") {
+        ss  << (index == 0 ? "@THIS\n" : "@THAT\n")
+            << "D=M\n\n";
+    }
+    else if (segment == "temp") {
+        ss  << "@R5\n"
+            << "D=A\n"
+            << "@" << index << "\n"
+            << "A=D+A\n"
+            << "D=M\n\n";
     }
     else {
         auto segmentSymbol = segmentMap.at(segment);
-        ss << "@" << segmentSymbol << "\n"
+        ss  << "@" << segmentSymbol << "\n"
             << "D=M\n"
             << "@" << index << "\n"
             << "A=D+A\n"
@@ -265,6 +314,8 @@ std::string CodeWriter::makePushASMCode(const std::string& segment, int index)
     return ss.str();
 }
 
+//-------------------------------------------------------------------
+
 std::string CodeWriter::makePopASMCode(const std::string& segment, int index)
 {
     std::stringstream ss;
@@ -274,11 +325,38 @@ std::string CodeWriter::makePopASMCode(const std::string& segment, int index)
         throw std::runtime_error("Error: 'pop constant' is an invalid command.");
     }
     else if (segment == "static") {
-        // TODO
+        // D 레지스터에 스택 값을 pop
+        ss << popStackToD()
+            // FileName.index 변수에 D 값을 저장
+            << "@" << currentFileName << "." << index << "\n"
+            << "M=D\n";
     }
+    else if (segment == "pointer") {
+        // D 레지스터에 스택 값을 pop
+        ss << popStackToD()
+            // index가 0이면 THIS, 1이면 THAT에 D 값을 저장
+            << (index == 0 ? "@THIS\n" : "@THAT\n")
+            << "M=D\n";
+    }
+    else if (segment == "temp") {
+        // 1. 목적지 주소(R5 + index)를 계산해서 R13에 임시 저장
+        ss << "@R5\n"
+            << "D=A\n"
+            << "@" << index << "\n"
+            << "D=D+A\n"
+            << "@R13\n"
+            << "M=D\n"
+            // 2. 스택 값을 D 레지스터에 pop
+            << popStackToD()
+            // 3. R13에 저장된 주소로 찾아가 D 값을 저장
+            << "@R13\n"
+            << "A=M\n"
+            << "M=D\n";
+    }
+
     else {
         std::string segSymbol = segmentMap.at(segment);
-        ss << "@" << segSymbol << "\n"
+        ss  << "@" << segSymbol << "\n"
             << "D=M\n"
             << "@" << index << "\n"
             << "D=D+A\n"
@@ -298,10 +376,13 @@ std::string CodeWriter::makePopASMCode(const std::string& segment, int index)
 //-------------------------------------------------------------------
 // low-level stack helpers
 //-------------------------------------------------------------------
+
 std::string CodeWriter::popStackToD()
 {
     return "@SP\nM=M-1\nA=M\nD=M\n";
 }
+
+//-------------------------------------------------------------------
 
 std::string CodeWriter::pushDToStack()
 {
