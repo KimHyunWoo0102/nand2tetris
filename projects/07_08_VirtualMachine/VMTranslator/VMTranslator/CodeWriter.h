@@ -50,7 +50,7 @@ class CodeWriter {
 	std::string pushDToStack();
 
 public:
-	CodeWriter(const std::string& inputVmFilename);
+	CodeWriter();
 	~CodeWriter();
 
 	void writeInit();
