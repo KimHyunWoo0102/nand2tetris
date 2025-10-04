@@ -55,7 +55,7 @@ public:
 
 	void writeInit();
 	void setFileName(const std::string& vmFilename);
-	void writeArithmetic(std::string& command);
-	void writePushPop(VMParser::CMD_TYPE command, std::string segment, int index);
+	void writeArithmetic(const std::string& command);
+	void writePushPop(VMParser::CMD_TYPE command,const std::string& segment, int index);
 
 };

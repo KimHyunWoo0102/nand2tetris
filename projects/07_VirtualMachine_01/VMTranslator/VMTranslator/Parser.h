@@ -41,7 +41,7 @@ namespace VMParser {
 
 		//----------------------------
 		
-		Parser(std::string& filename);
+		Parser(const std::string& filename);
 		~Parser();
 
 		//----------------------------

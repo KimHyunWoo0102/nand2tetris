@@ -80,7 +80,7 @@ void CodeWriter::writeInit()
 // writeArithmetic
 //-------------------------------------------------------------------
 
-void CodeWriter::writeArithmetic(std::string& command)
+void CodeWriter::writeArithmetic(const std::string& command)
 {
     if (arithmeticMap.count(command)) {
         ofs << "// " << command << "\n";
@@ -263,7 +263,7 @@ std::string CodeWriter::makeLTASMCode()
 // writePushPop
 //-------------------------------------------------------------------
 
-void CodeWriter::writePushPop(VMParser::CMD_TYPE command, std::string segment, int index)
+void CodeWriter::writePushPop(VMParser::CMD_TYPE command, const std::string& segment, int index)
 {
     std::string instruction;
     switch (command) {

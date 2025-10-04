@@ -16,7 +16,7 @@ const std::unordered_set<std::string> ARITHMETIC_COMMANDS = {
 //---------------------------------------------------------------
 
 
-VMParser::Parser::Parser(std::string& filename)
+VMParser::Parser::Parser(const std::string& filename)
 	:ifs(filename)
 {
 	if (!ifs.is_open()) {
