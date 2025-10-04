@@ -1,5 +1,8 @@
-#include"Parser.h"
-#include"CodeWriter.h"
+#include"VMTranslator.h"
+#include<iostream>
+#include<string>
+
+using namespace std;
 
 int main() {
     try {
@@ -7,13 +10,8 @@ int main() {
         std::cout << "Enter VM filename (.vm): ";
         std::cin >> filename;
 
-        // VM 파서 초기화
-        VMParser::Parser parser(filename);
-
-        // CodeWriter 초기화 (출력 asm 파일 생성됨)
-        CodeWriter cw(filename);
-
-        std::cout << "Translation completed. Check the .asm file." << std::endl;
+        VMTranslator translator(filename); // 수정
+        translator.translate();
     }
     catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
