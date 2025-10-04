@@ -55,7 +55,7 @@ void VMTranslator::translate()
     m_codeWriter.writeCall("Sys.init", 0);
 
     for (const auto& vmFile : m_vmFiles) {
-        m_code.setCurrentFileName(vmFile);
+        m_codeWriter.setCurrentFileName(vmFile);
 
         VMParser::Parser parser(vmFile);
 
@@ -76,4 +76,6 @@ void VMTranslator::translate()
             }
         }
     }
+
+}
 

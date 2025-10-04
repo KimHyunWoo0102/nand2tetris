@@ -24,6 +24,7 @@ class CodeWriter {
 	std::ofstream ofs;
 	size_t label_counter = 0;
 
+	std::string outputPath;
 	std::string currentFileName;
 
 	//write Arithmetic helper method
@@ -53,9 +54,18 @@ public:
 	CodeWriter();
 	~CodeWriter();
 
+	void setOutputPath(const std::string& outputPath);
+	void setCurrentFileName(const std::string& vmCurrentFileName);
+
 	void writeInit();
-	void setFileName(const std::string& vmFilename);
 	void writeArithmetic(const std::string& command);
 	void writePushPop(VMParser::CMD_TYPE command,const std::string& segment, int index);
 
+	void writeLabel(const std::string& label);
+	void writeGoto(const std::string& label);
+	void writeIf(const std::string& label);
+
+	void writeFunction(const std::string& functionName, int localNums);
+	void writeCall(const std::string& functionName, int nVars);
+	void writeReturn();
 };

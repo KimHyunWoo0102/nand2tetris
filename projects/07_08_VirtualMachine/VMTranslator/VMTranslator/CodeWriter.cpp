@@ -16,29 +16,8 @@ static const std::map<std::string, std::string> segmentMap = {
 // constructor && destructor
 //-------------------------------------------------------------------
 
-CodeWriter::CodeWriter(const std::string& inputVmFilename)
+CodeWriter::CodeWriter()
 {
-    // --- 1. 출력 파일(.asm) 경로 설정 ---
-    auto dot_pos = inputVmFilename.find_last_of('.');
-    if (dot_pos == std::string::npos)
-        throw std::runtime_error("Invalid vm filename: " + inputVmFilename);
-
-    std::string out_file_name = inputVmFilename.substr(0, dot_pos) + ".asm";
-    ofs.open(out_file_name);
-    if (!ofs.is_open()) {
-        throw std::runtime_error("Failed to open output file: " + out_file_name);
-    }
-
-    // --- 2. static 변수용 파일 이름 설정 ---
-    auto sep_pos = inputVmFilename.find_last_of("/\\");
-    if (sep_pos == std::string::npos) {
-        currentFileName = inputVmFilename.substr(0, dot_pos);
-    }
-    else {
-        currentFileName = inputVmFilename.substr(sep_pos + 1, dot_pos - sep_pos - 1);
-    }
-
-    // Arithmetic command mapping
     arithmeticMap["add"] = [this]() { return this->makeAddASMCode(); };
     arithmeticMap["sub"] = [this]() { return this->makeSubASMCode(); };
     arithmeticMap["and"] = [this]() { return this->makeAndASMCode(); };
@@ -62,6 +41,28 @@ CodeWriter::~CodeWriter()
         << "0;JMP\n";
 
     ofs.close();
+}
+
+//-------------------------------------------------------------------
+// Setup && ASM bootstrap initialization
+//-------------------------------------------------------------------
+
+void CodeWriter::setOutputPath(const std::string& outputPath)
+{
+    this->outputPath = outputPath;
+
+    ofs.open(this->outputPath);
+    
+    if (!ofs.is_open()) {
+        throw std::runtime_error("Failed to open output file: " + outputPath);
+    }
+}
+
+//-------------------------------------------------------------------
+
+void CodeWriter::setCurrentFileName(const std::string& vmCurrentFileName)
+{
+    this->currentFileName = vmCurrentFileName;
 }
 
 //-------------------------------------------------------------------
