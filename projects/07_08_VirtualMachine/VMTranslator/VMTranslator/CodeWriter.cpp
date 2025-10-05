@@ -1,6 +1,8 @@
-#include "CodeWriter.h"
+﻿#include "CodeWriter.h"
 #include <sstream>
+#include<filesystem>
 
+namespace fs = std::filesystem;
 //-------------------------------------------------------------------
 // Maps VM memory segments to their corresponding assembly symbols.
 //-------------------------------------------------------------------
@@ -36,8 +38,8 @@ CodeWriter::CodeWriter()
 CodeWriter::~CodeWriter()
 {
     ofs << "\n// Infinite loop to end the program\n"
-        << "(END)\n"
-        << "@END\n"
+        << "(PROGRAM_END)\n"
+        << "@PROGRAM_END\n"
         << "0;JMP\n";
 
     ofs.close();
@@ -60,9 +62,10 @@ void CodeWriter::setOutputPath(const std::string& outputPath)
 
 //-------------------------------------------------------------------
 
-void CodeWriter::setCurrentFileName(const std::string& vmCurrentFileName)
+void CodeWriter::setCurrentFileName(const std::string& vmFilePath)
 {
-    this->currentFileName = vmCurrentFileName;
+    // ✨ 전체 경로(vmFilePath)에서 확장자를 제외한 파일 이름만 추출합니다.
+    this->currentFileName = fs::path(vmFilePath).stem().string();
 }
 
 //-------------------------------------------------------------------
@@ -334,13 +337,13 @@ std::string CodeWriter::makePopASMCode(const std::string& segment, int index)
     }
     else if (segment == "static") {
         ss  << popStackToD()
-            // FileName.index ������ D ���� ����
+            // FileName.index 변수에 D 값을 저장
             << "@" << currentFileName << "." << index << "\n"
             << "M=D\n";
     }
     else if (segment == "pointer") {
         ss  << popStackToD()
-            // index�� 0�̸� THIS, 1�̸� THAT�� D ���� ����
+            // index가 0이면 THIS, 1이면 THAT에 D 값을 저장
             << (index == 0 ? "@THIS\n" : "@THAT\n")
             << "M=D\n";
     }
@@ -379,6 +382,143 @@ std::string CodeWriter::makePopASMCode(const std::string& segment, int index)
 }
 
 //-------------------------------------------------------------------
+// private Branch helper method
+//-------------------------------------------------------------------
+
+std::string CodeWriter::generateLabelName(const std::string& label) {
+    if (currentFunctionName.empty()) {
+        return label; // 함수가 없으면 레이블 이름 그대로 사용
+    }
+    return currentFunctionName + "$" + label; // 함수가 있으면 FunctionName$Label 형식 사용
+}
+
+//-------------------------------------------------------------------
+// Write branch instructions 
+//-------------------------------------------------------------------
+
+void CodeWriter::writeLabel(const std::string& label)
+{
+    ofs << "// label " << label << '\n';
+    
+    ofs << "(" << generateLabelName(label) << ")\n";
+}
+
+//-------------------------------------------------------------------
+
+void CodeWriter::writeGoto(const std::string& label)
+{
+    ofs << "// goto " << label << "\n";
+    ofs << "@" << generateLabelName(label) << "\n";
+    ofs << "0;JMP\n";
+}
+
+//-------------------------------------------------------------------
+
+void CodeWriter::writeIf(const std::string& label)
+{
+    ofs << "// if-goto " << label << '\n';
+    ofs << popStackToD();
+
+    ofs << "@" << generateLabelName(label) << "\n";
+    ofs << "D;JNE\n";
+}
+
+//-------------------------------------------------------------------
+
+void CodeWriter::writeFunction(const std::string& functionName, int numLocals)
+{
+    this->currentFunctionName = functionName;
+    this->label_counter = 0; // 함수가 바뀌었으니 고유 레이블 카운터도 리셋
+
+    ofs << "// function " << functionName << " " << numLocals << "\n"
+        << "(" << functionName << ")\n";
+
+    for (int i = 0; i < numLocals; ++i) {
+        ofs << "@SP\n"
+            << "A=M\n"
+            << "M=0\n" // 스택에 0을 push
+            << "@SP\n"
+            << "M=M+1\n";
+    }
+}
+  
+//-------------------------------------------------------------------
+
+void CodeWriter::writeCall(const std::string& functionName, int numArgs)
+{
+    std::string returnLabel = functionName + "$ret." + std::to_string(label_counter++);
+
+    ofs << "// call " << functionName << " " << numArgs << "\n";
+
+    // push return address
+    ofs << "@" << returnLabel << '\n'
+        << "D=A\n" << pushDToStack();
+   
+    // push LCL,ARG,THIS,THAT
+    ofs << "@LCL\nD=M\n" << pushDToStack();
+    ofs << "@ARG\nD=M\n" << pushDToStack();
+    ofs << "@THIS\nD=M\n" << pushDToStack();
+    ofs << "@THAT\nD=M\n" << pushDToStack();
+
+    // reset ARG
+    ofs << "@SP\n";
+    ofs << "D=M\n";
+    ofs << "@" << 5 + numArgs << '\n';
+    ofs << "D=D-A\n";
+    ofs << "@ARG\nM=D\n";
+
+    //reset LCL;
+    ofs << "@SP\nD=M\n@LCL\nM=D\n";
+    
+    ofs << "@" << functionName << '\n'
+        << "0;JMP\n";
+
+    ofs << "(" << returnLabel << ")\n";
+}
+
+//-------------------------------------------------------------------
+
+void CodeWriter::writeReturn()
+{
+    ofs << "// return\n";
+
+    // FRAME = LCL (use R13 as a temporary variable)
+    ofs << "@LCL\n"
+        << "D=M\n"
+        << "@R13\n"
+        << "M=D\n";
+
+    // RET = *(FRAME - 5) (use R14 for return address)
+    ofs << "@5\n"
+        << "A=D-A\n" // D still holds the value of LCL from above
+        << "D=M\n"
+        << "@R14\n"
+        << "M=D\n";
+
+    // *ARG = pop()
+    ofs << popStackToD()
+        << "@ARG\n"
+        << "A=M\n"
+        << "M=D\n";
+
+    ofs << "@ARG\n"
+        << "D=M+1\n"
+        << "@SP\n"
+        << "M=D\n";
+
+    // Restore THAT, THIS, ARG, LCL
+    ofs << "@R13\nAM=M-1\nD=M\n@THAT\nM=D\n"
+        << "@R13\nAM=M-1\nD=M\n@THIS\nM=D\n"
+        << "@R13\nAM=M-1\nD=M\n@ARG\nM=D\n"
+        << "@R13\nAM=M-1\nD=M\n@LCL\nM=D\n";
+
+    // goto RET
+    ofs << "@R14\n"
+        << "A=M\n"
+        << "0;JMP\n";
+}
+
+//-------------------------------------------------------------------
 // low-level stack helpers
 //-------------------------------------------------------------------
 
@@ -393,3 +533,5 @@ std::string CodeWriter::pushDToStack()
 {
     return "@SP\nA=M\nM=D\n@SP\nM=M+1\n";
 }
+
+//-------------------------------------------------------------------

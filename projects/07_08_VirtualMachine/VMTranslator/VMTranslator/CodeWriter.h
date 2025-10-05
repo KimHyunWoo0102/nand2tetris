@@ -26,6 +26,7 @@ class CodeWriter {
 
 	std::string outputPath;
 	std::string currentFileName;
+	std::string currentFunctionName;
 
 	//write Arithmetic helper method
 	//이항 연산자
@@ -50,6 +51,7 @@ class CodeWriter {
 	std::string popStackToD();
 	std::string pushDToStack();
 
+	std::string generateLabelName(const std::string& label);
 public:
 	CodeWriter();
 	~CodeWriter();
@@ -65,7 +67,7 @@ public:
 	void writeGoto(const std::string& label);
 	void writeIf(const std::string& label);
 
-	void writeFunction(const std::string& functionName, int localNums);
-	void writeCall(const std::string& functionName, int nVars);
+	void writeFunction(const std::string& functionName, int numLocals);
+	void writeCall(const std::string& functionName, int numArgs);
 	void writeReturn();
 };

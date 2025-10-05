@@ -8,6 +8,7 @@ namespace fs = std::filesystem;
 #include "VMTranslator.h"
 #include <filesystem>
 #include "Parser.h" // Parser도 필요합니다.
+#include<string>
 
 namespace fs = std::filesystem;
 
@@ -56,7 +57,6 @@ void VMTranslator::translate()
 
     for (const auto& vmFile : m_vmFiles) {
         m_codeWriter.setCurrentFileName(vmFile);
-
         VMParser::Parser parser(vmFile);
 
         while (parser.hasMoreLines()) {
@@ -72,6 +72,26 @@ void VMTranslator::translate()
             case VMParser::CMD_TYPE::C_POP:
                 m_codeWriter.writePushPop(cmdType, parser.arg1(), parser.arg2());
                 break;
+            case VMParser::CMD_TYPE::C_GOTO:
+                m_codeWriter.writeGoto(parser.arg1());
+                break;
+            case VMParser::CMD_TYPE::C_IF:
+                m_codeWriter.writeIf(parser.arg1());
+                break;
+            case VMParser::CMD_TYPE::C_LABEL:
+                m_codeWriter.writeLabel(parser.arg1());
+                break;
+            case VMParser::CMD_TYPE::C_FUNCTION:
+                m_codeWriter.writeFunction(parser.arg1(), parser.arg2());
+                break;
+            case VMParser::CMD_TYPE::C_CALL:
+                m_codeWriter.writeCall(parser.arg1(), parser.arg2());
+                break;
+            case VMParser::CMD_TYPE::C_RETURN:
+                m_codeWriter.writeReturn();
+                break;
+            default:
+                throw std::runtime_error("translate() : Invalid command!");
                 // ... 여기에 label, goto, if-goto, function, call, return에 대한 case 추가 ...
             }
         }

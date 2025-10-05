@@ -6,15 +6,26 @@ using namespace std;
 
 int main() {
     try {
-        std::string filename;
-        std::cout << "Enter VM filename (.vm): ";
-        std::cin >> filename;
+        std::cout << "Program started... \n";
 
-        VMTranslator translator(filename); // ¼öÁ¤
+        std::string filename;
+        std::cout << "Enter source (.vm) or (directory) : ";
+        std::cin >> filename;
+        std::cout << "Input received: " << filename << "\n";
+     
+        VMTranslator translator(filename);
+        std::cout << "Translator constructed\n";
+
+        std::cout << "start translating...\n";  
+
         translator.translate();
+        std::cout << "Translation done\n";
+
+        std::cin.get(); std::cin.get();
     }
     catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
+        std::cin.get(); std::cin.get();
         return 1;
     }
 
