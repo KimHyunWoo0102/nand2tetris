@@ -23,7 +23,13 @@ public:
 
 	bool hasMoreTokens();
 	void advance();
-	Token::Token getCurrentToken() { return token; }
+	
+	//getter
+	Token::Token getCurrentToken()const { return token; }
+	int intVal() const;
+	char symbol() const;
+	std::string identifier()const;
+	std::string stringVal()const;
 
 	//public helper method
 	void print() {

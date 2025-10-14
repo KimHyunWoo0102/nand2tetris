@@ -149,3 +149,45 @@ void Tokenizer::advance()
 }
 
 //----------------------------------------------------------------
+// getter
+//----------------------------------------------------------------
+
+int Tokenizer::intVal() const {
+	if (this->token.type != Token::TokenType::INT_CONST) {
+		throw std::logic_error("intVal() : Token is not an INT_CONST");
+	}
+
+	return std::get<int>(this->token.value);
+}
+
+//----------------------------------------------------------------
+
+char Tokenizer::symbol() const
+{
+	if (this->token.type != Token::TokenType::SYMBOL) {
+		throw std::logic_error("symbol() : Token is not a SYMBOL");
+	}
+	return std::get<char>(this->token.value);
+}
+
+//----------------------------------------------------------------
+
+std::string Tokenizer::identifier() const
+{
+	if (this->token.type != Token::TokenType::IDENTIFIER) {
+		throw std::logic_error("identifier() : Token is not an IDENTIFIER");
+	}
+	return std::get<std::string>(this->token.value);
+}
+
+//----------------------------------------------------------------
+
+std::string Tokenizer::stringVal() const
+{
+	if (this->token.type != Token::TokenType::STRING_CONST) {
+		throw std::logic_error("stringVal() : Token is not an STRING_CONST");
+	}
+	return std::get<std::string>(this->token.value);
+}
+
+//----------------------------------------------------------------
