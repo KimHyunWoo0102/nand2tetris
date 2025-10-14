@@ -8,28 +8,31 @@
 #include<sstream>
 
 class Tokenizer {
-	std::string currentToken;
 	std::stringstream ss;
 
-	Token::Token token;
+	Token::Token currentToken;
+	Token::Token nextToken;
 	
 	//private helper method
 	std::string removeComments(const std::string& code);
 	void skipWhitespace();
 	bool isSymbol(char c);
+	void readNextToken();
 
 public:
 	Tokenizer(const std::string& filename);
 
 	bool hasMoreTokens();
 	void advance();
-	
 	//getter
-	Token::Token getCurrentToken()const { return token; }
+	const Token::Token& getCurrentToken()const { return currentToken; }
+	const Token::Token& peekToken()const { return nextToken; }
+
 	int intVal() const;
 	char symbol() const;
-	std::string identifier()const;
-	std::string stringVal()const;
+	const std::string& identifier()const;
+	const std::string& stringVal()const;
+	Token::KeywordType keyword() const;
 
 	//public helper method
 	void print() {

@@ -51,7 +51,7 @@ int main() {
 
         while (tn.hasMoreTokens()) {
             tn.advance();
-            auto token = tn.getCurrentToken();
+            auto token = tn.peekToken();
 
             switch (token.type) {
             case Token::TokenType::INT_CONST:
