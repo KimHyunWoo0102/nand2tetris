@@ -18,5 +18,16 @@
     <ClInclude Include="Token.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Tokenizer.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Tokenizer.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
