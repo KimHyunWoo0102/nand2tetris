@@ -1,0 +1,17 @@
+// This is a single-line comment.
+class Main {
+    /* This is a
+       multi-line comment.
+       It spans multiple lines. */
+    function void main() {
+        var int x, y;
+        let x = 10; // Inline comment
+        let y = x / 2; // Test division operator
+        
+        /** This is a doc-comment, handled like a multi-line. */
+        let s = "String with /* not a comment */ inside";
+
+        /* Nested // comment */
+        let z = 5; 
+    }
+}
