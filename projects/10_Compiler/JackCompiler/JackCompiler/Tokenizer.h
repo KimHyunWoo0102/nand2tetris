@@ -24,6 +24,7 @@ public:
 
 	bool hasMoreTokens();
 	void advance();
+
 	//getter
 	const Token::Token& getCurrentToken()const { return currentToken; }
 	const Token::Token& peekToken()const { return nextToken; }

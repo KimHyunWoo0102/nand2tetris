@@ -50,7 +50,7 @@ int main() {
         Tokenizer tn(filename);
 
         while (tn.hasMoreTokens()) {
-            tn.advance();
+            tn.readNextToken();
             auto token = tn.peekToken();
 
             switch (token.type) {
