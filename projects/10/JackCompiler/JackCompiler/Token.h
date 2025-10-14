@@ -1,6 +1,7 @@
 #pragma once
 #include<unordered_map>
 #include<string>
+#include<variant>
 
 namespace Token {
 	enum class TokenType { 
@@ -20,6 +21,7 @@ namespace Token {
         LET, DO, IF, ELSE, WHILE, RETURN
     };
 
+ 
     const std::unordered_map<std::string, KeywordType> keywordMap = {
          {"class",       KeywordType::CLASS},
          {"constructor", KeywordType::CONSTRUCTOR},
@@ -42,5 +44,12 @@ namespace Token {
          {"else",        KeywordType::ELSE},
          {"while",       KeywordType::WHILE},
          {"return",      KeywordType::RETURN}
+    };
+
+    using TokenValue = std::variant<KeywordType, char, int, std::string>;
+
+    struct Token {
+        TokenType type;
+        TokenValue value;
     };
 }
