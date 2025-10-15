@@ -69,6 +69,7 @@ bool Tokenizer::isSymbol(char c)
 
 void Tokenizer::readNextToken()
 {
+	skipWhitespace();
 	char nextChar = ss.peek();
 
 	if (isdigit(nextChar)) {

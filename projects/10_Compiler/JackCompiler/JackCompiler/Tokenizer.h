@@ -34,6 +34,7 @@ public:
 	const std::string& identifier()const;
 	const std::string& stringVal()const;
 	Token::KeywordType keyword() const;
+	Token::TokenType tokenType() const;
 
 	//public helper method
 	void print() {
