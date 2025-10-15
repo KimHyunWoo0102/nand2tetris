@@ -52,4 +52,7 @@ namespace Token {
         TokenType type;
         TokenValue value;
     };
+
+    std::string keywordToString(KeywordType kw);
+    std::string tokenTypeToString(TokenType type);
 }
