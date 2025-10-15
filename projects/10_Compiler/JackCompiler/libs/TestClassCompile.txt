@@ -1,0 +1,4 @@
+// A syntactically correct class.
+class int {
+    
+}
