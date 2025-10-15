@@ -210,3 +210,10 @@ Token::KeywordType Tokenizer::keyword() const
 }
 
 //----------------------------------------------------------------
+
+Token::TokenType Tokenizer::tokenType() const
+{
+	return this->currentToken.type;
+}
+
+//----------------------------------------------------------------
