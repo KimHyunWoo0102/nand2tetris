@@ -105,6 +105,11 @@ void CompilationEngine::process(Token::TokenType expectedType)
 // class component compile
 //-----------------------------------------------------
 
+/**
+ * @brief 클래스 전체를 컴파일한다.
+ * @grammar 'class' className '{' classVarDec* subroutineDec* '}'
+ */
+
 void CompilationEngine::compileClass()
 {
     writeIndent();
@@ -135,6 +140,11 @@ void CompilationEngine::compileClass()
 }
 
 //-----------------------------------------------------
+
+/**
+ * @brief 정적(static) 또는 필드(field) 변수 선언을 컴파일한다.
+ * @grammar ('static' | 'field') type varName (',' varName)* ';'
+ */
 
 void CompilationEngine::compileClassVarDec()
 {
@@ -175,15 +185,37 @@ void CompilationEngine::compileClassVarDec()
 
 //-----------------------------------------------------
 
+/**
+ * @brief 하나의 완전한 서브루틴(메서드, 함수, 생성자)을 컴파일한다.
+ * @grammar ('constructor'|'function'|'method') ('void'|type) subroutineName '(' parameterList ')' subroutineBody
+ */
+
 void CompilationEngine::compileSubroutine()
 {
+    // grammer : ('constructor'|'function'|'method') ('void'|type) subroutineName '(' ... ')' '{'... '}'
+
     writeIndent();
     this->indentationLevel++;
-    ofs << "<subroutine>\n";
+    ofs << "<subroutineDec>\n";
+    
+    process(tokenizer.keyword());
+    
+    if (tokenizer.tokenType() == Token::TokenType::KEYWORD) {
+        // int, boolean 등 내장형
+        process(tokenizer.keyword());
+    }
+    else {
+        process(Token::TokenType::IDENTIFIER);
+    }
 
-    //TODO: 서브루틴 종류
-    // 이름, 괄호,파라미터,몸통순으로 컴파일
+    process(Token::TokenType::IDENTIFIER);
+    process('(');
+    compileParameterList();
+    process(')');
+
+    compileSubroutineBody();
+
     this->indentationLevel--;
     writeIndent();
-    ofs << "</subrountine>\n";
+    ofs << "</subroutineDec>\n";
 }

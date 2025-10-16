@@ -15,7 +15,7 @@ private:
 
     int indentationLevel = 0;
     // helpet method
-    void printIndent();
+    void writeIndent();
 
     std::string escapeXml(char symbol);
 
@@ -32,6 +32,7 @@ private:
     // compile 서브루틴 요소 
     void compileParameterList();
     void compileVarDec();
+    void compileSubroutineBody();
 
     // compile statements
     void compileStatements();
