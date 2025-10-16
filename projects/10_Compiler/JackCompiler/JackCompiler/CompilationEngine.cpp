@@ -48,6 +48,7 @@ std::string CompilationEngine::escapeXml(char symbol) {
 void CompilationEngine::process(Token::KeywordType expectedKeyword)
 {
     if (tokenizer.tokenType() == Token::TokenType::KEYWORD && tokenizer.keyword() == expectedKeyword) {
+        writeIndent();
         ofs << "<keyword> " << keywordToString(expectedKeyword) << " </keyword>\n";
         tokenizer.advance();
     }
@@ -63,7 +64,7 @@ void CompilationEngine::process(Token::KeywordType expectedKeyword)
 
 void CompilationEngine::process(char expectedSymbol) {
     if (tokenizer.tokenType() == Token::TokenType::SYMBOL && tokenizer.symbol() == expectedSymbol) {
-        // 이제 내부 헬퍼 함수를 호출한다.
+        writeIndent();
         ofs << "<symbol> " << escapeXml(expectedSymbol) << " </symbol>\n";
         tokenizer.advance();
     }
@@ -79,12 +80,15 @@ void CompilationEngine::process(Token::TokenType expectedType)
     if (tokenizer.tokenType() == expectedType) {
         switch (expectedType) {
         case Token::TokenType::IDENTIFIER:
+            writeIndent();
             ofs << "<identifier> " << tokenizer.identifier() << " </identifier>\n";
             break;
         case Token::TokenType::INT_CONST:
+            writeIndent();
             ofs << "<integerConstant> " << tokenizer.intVal() << " </integerConstant>\n";
             break;
         case Token::TokenType::STRING_CONST:
+            writeIndent();
             ofs << "<stringConstant> " << tokenizer.stringVal() << " </stringConstant>\n";
             break;
         default:
@@ -173,4 +177,13 @@ void CompilationEngine::compileClassVarDec()
 
 void CompilationEngine::compileSubroutine()
 {
+    writeIndent();
+    this->indentationLevel++;
+    ofs << "<subroutine>\n";
+
+    //TODO: 서브루틴 종류
+    // 이름, 괄호,파라미터,몸통순으로 컴파일
+    this->indentationLevel--;
+    writeIndent();
+    ofs << "</subrountine>\n";
 }
