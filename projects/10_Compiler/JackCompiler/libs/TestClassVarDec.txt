@@ -1,0 +1,14 @@
+// A test file for compileClassVarDec
+class Main {
+
+    // Test 1: A single static variable
+    static boolean testMode;
+
+    // Test 2: A field declaration with a custom type (another class name)
+    field SquareGame game;
+
+    // Test 3: A field declaration with multiple comma-separated variables
+    field int x, y, size;
+
+    static int anotherVar;
+}

@@ -11,7 +11,6 @@ int main() {
         std::cin >> filename;
 
         Tokenizer tn(filename);
-        tn.print();
 
         std::filesystem::path fp(filename);
         fp.replace_extension(".xml");

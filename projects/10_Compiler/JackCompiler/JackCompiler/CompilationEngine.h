@@ -13,7 +13,10 @@ private:
     std::ofstream ofs;
     Tokenizer& tokenizer;
 
+    int indentationLevel = 0;
     // helpet method
+    void printIndent();
+
     std::string escapeXml(char symbol);
 
     void process(Token::KeywordType expectedKeyword);
