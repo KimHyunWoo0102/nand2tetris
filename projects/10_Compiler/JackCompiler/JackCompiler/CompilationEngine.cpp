@@ -94,10 +94,48 @@ void CompilationEngine::process(Token::TokenType expectedType)
 
 void CompilationEngine::compileClass()
 {
-    ofs << "<Class>\n";
+    ofs << "<class>\n";
     process(Token::KeywordType::CLASS);
     process(Token::TokenType::IDENTIFIER);
     process('{');
     // TODO : class field, static, subroutine compile
+    while (tokenizer.hasMoreTokens()) {
+        const auto& nextToken = tokenizer.peekToken();
+
+        if (nextToken.type == Token::TokenType::KEYWORD) {
+            const auto& kw = std::get<Token::KeywordType>(nextToken.value);
+
+            if (kw == Token::KeywordType::STATIC || kw == Token::KeywordType::FIELD) {
+                compileClassVarDec();
+            }
+            else {
+                break;
+            }
+        }
+        else {
+            break;
+        }
+    }
+
+    while (tokenizer.hasMoreTokens()) {
+        const auto& nextToken = tokenizer.peekToken();
+
+        if (nextToken.type == Token::TokenType::KEYWORD) {
+            const auto& kw = std::get<Token::KeywordType>(nextToken.value);
+
+            if (kw == Token::KeywordType::CONSTRUCTOR || kw == Token::KeywordType::METHOD
+                ||kw==Token::KeywordType::FUNCTION) {
+                compileSubroutine();
+            }
+            else {
+                break;
+            }
+        }
+        else {
+            break;
+        }
+    }
+
     process('}');
+    ofs << "</class>\n";
 }
