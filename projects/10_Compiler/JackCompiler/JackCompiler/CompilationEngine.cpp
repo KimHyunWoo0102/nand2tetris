@@ -264,6 +264,8 @@ void CompilationEngine::compileParameterList()
 
 
 //-----------------------------------------------------
+// subroutine component compile method
+//-----------------------------------------------------
 
 /**
  * @brief 서브루틴의 몸체('{...}')를 컴파일한다.
@@ -281,7 +283,7 @@ void CompilationEngine::compileSubroutineBody()
     while (tokenizer.tokenType() == Token::TokenType::KEYWORD && tokenizer.keyword() == Token::KeywordType::VAR) {
         compileVarDec();
     }
-    //compileStatements();
+    compileStatements();
 
     process('}');
 
@@ -324,6 +326,104 @@ void CompilationEngine::compileVarDec()
     this->indentationLevel--;
     writeIndent();
     ofs << "</varDec>\n";
+}
+
+//-----------------------------------------------------
+
+/**
+ * @brief 연속된 명령어들(statements)을 컴파일한다. 양 끝의 "{}"는 포함하지 않는다.
+ * @grammar statement*
+ */
+void CompilationEngine::compileStatements()
+{
+    writeIndent();
+    ofs << "<statements>\n";
+    indentationLevel++;
+
+    while (tokenizer.hasMoreTokens()) {
+        const auto& nextToken = tokenizer.peekToken();
+
+        if (nextToken.type != Token::TokenType::KEYWORD)
+            break;
+
+        auto kw = std::get<Token::KeywordType>(nextToken.value);
+
+        switch (kw) {
+            case Token::KeywordType::LET:    compileLet();    break;
+            case Token::KeywordType::IF:     compileIf();     break;
+            case Token::KeywordType::WHILE:  compileWhile();  break;
+            case Token::KeywordType::DO:     compileDo();     break;
+            case Token::KeywordType::RETURN: compileReturn(); break;
+            default: goto end_loop;
+        }
+    }
+
+end_loop:
+    indentationLevel--;
+    writeIndent();
+    ofs << "</statements>\n";
+}
+
+//-----------------------------------------------------
+// Statements component compile method
+//-----------------------------------------------------
+
+/**
+ * @brief 'let' 명령어를 컴파일한다.
+ * @grammar 'let' varName ('[' expression ']')? '=' expression ';'
+ */
+
+void CompilationEngine::compileLet()
+{
+    // ...
+}
+
+//-----------------------------------------------------
+
+/**
+ * @brief 'if' 명령어를 컴파일한다. 'else' 구문이 있을 수도 있다.
+ * @grammar 'if' '(' expression ')' '{' statements '}' ('else' '{' statements '}')?
+ */
+
+void CompilationEngine::compileIf()
+{
+    // ...
+}
+
+//-----------------------------------------------------
+
+/**
+ * @brief 'while' 명령어를 컴파일한다.
+ * @grammar 'while' '(' expression ')' '{' statements '}'
+ */
+
+void CompilationEngine::compileWhile()
+{
+    // ...
+}
+
+//-----------------------------------------------------
+
+/**
+ * @brief 'do' 명령어 (서브루틴 호출)를 컴파일한다.
+ * @grammar 'do' subroutineCall ';'
+ */
+
+void CompilationEngine::compileDo()
+{
+    // ...
+}
+
+//-----------------------------------------------------
+
+/**
+ * @brief 'return' 명령어를 컴파일한다.
+ * @grammar 'return' expression? ';'
+ */
+
+void CompilationEngine::compileReturn()
+{
+    // ...
 }
 
 //-----------------------------------------------------
