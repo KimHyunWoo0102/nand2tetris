@@ -14,7 +14,8 @@ private:
     Tokenizer& tokenizer;
 
     int indentationLevel = 0;
-    // helpet method
+
+    // helper method
     void writeIndent();
 
     std::string escapeXml(char symbol);
@@ -22,6 +23,7 @@ private:
     void process(Token::KeywordType expectedKeyword);
     void process(char expectedSymbol);
     void process(Token::TokenType expectedType);
+
     // compile class
     void compileClass();
 
@@ -31,8 +33,8 @@ private:
 
     // compile 서브루틴 요소 
     void compileParameterList();
-    void compileVarDec();
     void compileSubroutineBody();
+    void compileVarDec();
 
     // compile statements
     void compileStatements();

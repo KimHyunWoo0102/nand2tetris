@@ -1,0 +1,26 @@
+// A test file focused exclusively on compileVarDec.
+// It contains no other statements like 'let' or 'return'.
+class Main {
+
+    function void test() {
+        
+        // --- Tests for compileVarDec ---
+
+        // Test 1: A single variable with a primitive type.
+        var int counter;
+
+        // Test 2: Multiple comma-separated variables on a single line.
+        // This tests the inner 'while' loop of compileVarDec.
+        var char key, anotherKey, lastKey;
+
+        // Test 3: A variable with a custom class type (identifier).
+        var Ball myBall;
+
+        // Test 4: Another primitive type.
+        var boolean isRunning;
+
+        // The 'var' declarations are now finished.
+        // The next token is '}', which should terminate the
+        // varDec loop in compileSubroutineBody.
+    }
+}

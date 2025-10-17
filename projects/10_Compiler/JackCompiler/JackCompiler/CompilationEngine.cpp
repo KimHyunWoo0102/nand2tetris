@@ -262,10 +262,68 @@ void CompilationEngine::compileParameterList()
     ofs << "</parameterList>\n";
 }
 
+
 //-----------------------------------------------------
+
+/**
+ * @brief 서브루틴의 몸체('{...}')를 컴파일한다.
+ * @grammar '{' varDec* statements '}'
+ */
 
 void CompilationEngine::compileSubroutineBody()
 {
+    writeIndent();
+    this->indentationLevel++;
+    ofs << "<subroutineBody>\n";
+
     process('{');
+
+    while (tokenizer.tokenType() == Token::TokenType::KEYWORD && tokenizer.keyword() == Token::KeywordType::VAR) {
+        compileVarDec();
+    }
+    //compileStatements();
+
     process('}');
+
+    this->indentationLevel--;
+    writeIndent();
+    ofs << "</subroutineBody>\n";
 }
+
+//-----------------------------------------------------
+
+/**
+ * @brief 지역 변수 선언('var' 선언)을 컴파일한다.
+ * @grammar 'var' type varName (',' varName)* ';'
+ */
+
+void CompilationEngine::compileVarDec()
+{
+    writeIndent();
+    this->indentationLevel++;
+    ofs << "<varDec>\n";
+
+    process(Token::KeywordType::VAR);
+    
+    if (tokenizer.tokenType()==Token::TokenType::KEYWORD) {
+        process(tokenizer.keyword());
+    }
+    else {
+        process(Token::TokenType::IDENTIFIER);
+    }
+
+    process(Token::TokenType::IDENTIFIER);
+
+    while (tokenizer.tokenType() == Token::TokenType::SYMBOL && tokenizer.symbol() == ',') {
+        process(',');
+        process(Token::TokenType::IDENTIFIER);
+    }
+
+    process(';');
+    
+    this->indentationLevel--;
+    writeIndent();
+    ofs << "</varDec>\n";
+}
+
+//-----------------------------------------------------
