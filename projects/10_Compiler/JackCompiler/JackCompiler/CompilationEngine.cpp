@@ -192,8 +192,6 @@ void CompilationEngine::compileClassVarDec()
 
 void CompilationEngine::compileSubroutine()
 {
-    // grammer : ('constructor'|'function'|'method') ('void'|type) subroutineName '(' ... ')' '{'... '}'
-
     writeIndent();
     this->indentationLevel++;
     ofs << "<subroutineDec>\n";
@@ -218,4 +216,56 @@ void CompilationEngine::compileSubroutine()
     this->indentationLevel--;
     writeIndent();
     ofs << "</subroutineDec>\n";
+}
+
+//-----------------------------------------------------
+
+/**
+ * @brief 매개 변수 목록을 컴파일한다. 괄호 ( 와 ) 로 감싼 토큰들은 처리하지 않는다.
+ * @grammar ((type varName) (',' type varName)*)?
+ */
+
+void CompilationEngine::compileParameterList()
+{
+    writeIndent();
+    this->indentationLevel++;
+    ofs << "<parameterList>\n";
+
+    if (tokenizer.tokenType()!=Token::TokenType::SYMBOL||
+        tokenizer.symbol()!=')') {
+
+        if (tokenizer.tokenType() == Token::TokenType::KEYWORD) {
+            process(tokenizer.keyword());
+        }
+        else {
+            process(Token::TokenType::IDENTIFIER);
+        }
+
+        process(Token::TokenType::IDENTIFIER);
+
+        while (tokenizer.tokenType() == Token::TokenType::SYMBOL && tokenizer.symbol() == ',') {
+            process(',');
+
+            if (tokenizer.tokenType() == Token::TokenType::KEYWORD) {
+                process(tokenizer.keyword());
+            }
+            else {
+                process(Token::TokenType::IDENTIFIER);
+            }
+
+            process(Token::TokenType::IDENTIFIER);
+        }
+    }
+
+    this->indentationLevel--;
+    writeIndent();
+    ofs << "</parameterList>\n";
+}
+
+//-----------------------------------------------------
+
+void CompilationEngine::compileSubroutineBody()
+{
+    process('{');
+    process('}');
 }

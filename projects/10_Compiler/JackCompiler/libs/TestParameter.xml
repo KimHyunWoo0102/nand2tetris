@@ -1,0 +1,68 @@
+<class>
+  <keyword> class </keyword>
+  <identifier> TestAll </identifier>
+  <symbol> { </symbol>
+  <classVarDec>
+    <keyword> static </keyword>
+    <keyword> boolean </keyword>
+    <identifier> testMode </identifier>
+    <symbol> ; </symbol>
+  </classVarDec>
+  <classVarDec>
+    <keyword> field </keyword>
+    <keyword> int </keyword>
+    <identifier> x </identifier>
+    <symbol> , </symbol>
+    <identifier> y </identifier>
+    <symbol> , </symbol>
+    <identifier> size </identifier>
+    <symbol> ; </symbol>
+  </classVarDec>
+  <classVarDec>
+    <keyword> field </keyword>
+    <identifier> SquareGame </identifier>
+    <identifier> game </identifier>
+    <symbol> ; </symbol>
+  </classVarDec>
+  <subroutineDec>
+    <keyword> constructor </keyword>
+    <identifier> TestAll </identifier>
+    <identifier> new </identifier>
+    <symbol> ( </symbol>
+    <parameterList>
+      <keyword> int </keyword>
+      <identifier> startX </identifier>
+      <symbol> , </symbol>
+      <keyword> int </keyword>
+      <identifier> startY </identifier>
+    </parameterList>
+    <symbol> ) </symbol>
+    <symbol> { </symbol>
+    <symbol> } </symbol>
+  </subroutineDec>
+  <subroutineDec>
+    <keyword> function </keyword>
+    <keyword> int </keyword>
+    <identifier> getScore </identifier>
+    <symbol> ( </symbol>
+    <parameterList>
+    </parameterList>
+    <symbol> ) </symbol>
+    <symbol> { </symbol>
+    <symbol> } </symbol>
+  </subroutineDec>
+  <subroutineDec>
+    <keyword> method </keyword>
+    <keyword> void </keyword>
+    <identifier> move </identifier>
+    <symbol> ( </symbol>
+    <parameterList>
+      <keyword> char </keyword>
+      <identifier> direction </identifier>
+    </parameterList>
+    <symbol> ) </symbol>
+    <symbol> { </symbol>
+    <symbol> } </symbol>
+  </subroutineDec>
+  <symbol> } </symbol>
+</class>

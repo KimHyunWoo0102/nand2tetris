@@ -1,0 +1,29 @@
+// A comprehensive test file for the CompilationEngine.
+// It covers class structure, multiple variable declarations,
+// and various kinds of subroutines with different parameter lists.
+// The subroutine bodies are empty to test declaration parsing only.
+
+class TestAll {
+
+    // --- Tests for compileClassVarDec ---
+    static boolean testMode;      // Single static variable
+    field int x, y, size;       // Field with multiple comma-separated variables
+    field SquareGame game;        // Field with a custom class type
+
+    // --- Tests for compileSubroutine and its helpers ---
+
+    /** A constructor with multiple parameters. */
+    constructor TestAll new(int startX, int startY) {
+        // Body is empty for now.
+    }
+
+    /** A function with no parameters that returns a value. */
+    function int getScore() {
+        // Body is empty for now.
+    }
+
+    /** A method with a single parameter. */
+    method void move(char direction) {
+        // Body is empty for now.
+    }
+}
