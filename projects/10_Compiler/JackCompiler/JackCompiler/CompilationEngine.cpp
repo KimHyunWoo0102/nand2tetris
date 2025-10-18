@@ -231,8 +231,7 @@ void CompilationEngine::compileParameterList()
     this->indentationLevel++;
     ofs << "<parameterList>\n";
 
-    if (tokenizer.tokenType()!=Token::TokenType::SYMBOL||
-        tokenizer.symbol()!=')') {
+    if (!(tokenizer.tokenType() == Token::TokenType::SYMBOL && tokenizer.symbol() == ')')) {
 
         if (tokenizer.tokenType() == Token::TokenType::KEYWORD) {
             process(tokenizer.keyword());
@@ -334,6 +333,7 @@ void CompilationEngine::compileVarDec()
  * @brief 연속된 명령어들(statements)을 컴파일한다. 양 끝의 "{}"는 포함하지 않는다.
  * @grammar statement*
  */
+
 void CompilationEngine::compileStatements()
 {
     writeIndent();
@@ -341,12 +341,12 @@ void CompilationEngine::compileStatements()
     indentationLevel++;
 
     while (tokenizer.hasMoreTokens()) {
-        const auto& nextToken = tokenizer.peekToken();
+        const auto& currentToken = tokenizer.getCurrentToken();
 
-        if (nextToken.type != Token::TokenType::KEYWORD)
+        if (currentToken.type != Token::TokenType::KEYWORD)
             break;
 
-        auto kw = std::get<Token::KeywordType>(nextToken.value);
+        auto kw = std::get<Token::KeywordType>(currentToken.value);
 
         switch (kw) {
             case Token::KeywordType::LET:    compileLet();    break;
@@ -375,7 +375,27 @@ end_loop:
 
 void CompilationEngine::compileLet()
 {
-    // ...
+    writeIndent();
+    ofs << "<letStatement>\n";
+    indentationLevel++;
+
+    process(Token::KeywordType::LET);
+    process(Token::TokenType::IDENTIFIER);
+
+    if (tokenizer.tokenType() == Token::TokenType::SYMBOL &&
+        tokenizer.symbol() == '[') {
+        process('[');
+        compileExpression();
+        process(']');
+    }
+
+    process('=');
+    compileExpression();
+    process(';');
+
+    indentationLevel--;
+    writeIndent();
+    ofs << "</letStatement>\n";
 }
 
 //-----------------------------------------------------
@@ -387,7 +407,30 @@ void CompilationEngine::compileLet()
 
 void CompilationEngine::compileIf()
 {
-    // ...
+    writeIndent();
+    ofs << "<ifStatement>\n";
+    indentationLevel++;
+
+    process(Token::KeywordType::IF);
+    process('(');
+    compileExpression();
+    process(')');
+
+    process('{');
+    compileStatements();
+    process('}');
+
+    if (tokenizer.keyword() == Token::KeywordType::ELSE) {
+        process(Token::KeywordType::ELSE);
+        process('{');
+        compileStatements();
+        process('}');
+    }
+
+
+    indentationLevel--;
+    writeIndent();
+    ofs << "</ifStatement>\n";
 }
 
 //-----------------------------------------------------
@@ -399,7 +442,22 @@ void CompilationEngine::compileIf()
 
 void CompilationEngine::compileWhile()
 {
-    // ...
+    writeIndent();
+    ofs << "<whileStatement>\n";
+    indentationLevel++;
+
+    process(Token::KeywordType::WHILE);
+    process('(');
+    compileExpression();
+    process(')');
+
+    process('{');
+    compileStatements();
+    process('}');
+
+    indentationLevel--;
+    writeIndent();
+    ofs << "</whileStatement>\n";
 }
 
 //-----------------------------------------------------
@@ -411,7 +469,17 @@ void CompilationEngine::compileWhile()
 
 void CompilationEngine::compileDo()
 {
-    // ...
+    writeIndent();
+    ofs << "<doStatement>\n";
+    indentationLevel++;
+
+    process(Token::KeywordType::DO);
+    compileTerm();
+    process(';');
+
+    indentationLevel--;
+    writeIndent();
+    ofs << "</doStatement>\n";
 }
 
 //-----------------------------------------------------
@@ -423,7 +491,112 @@ void CompilationEngine::compileDo()
 
 void CompilationEngine::compileReturn()
 {
-    // ...
+    writeIndent();
+    ofs << "<returnStatement>\n";
+    indentationLevel++;
+
+    process(Token::KeywordType::RETURN);
+    compileExpression();
+    process(';');
+
+    indentationLevel--;
+    writeIndent();
+    ofs << "</returnStatement>\n";
+}
+
+//-----------------------------------------------------
+
+void CompilationEngine::compileExpression()
+{
+}
+
+//-----------------------------------------------------
+
+/**
+ * @brief 항(term)을 컴파일한다. 표현식 파서의 핵심이다.
+ * @grammar integerConstant | stringConstant | keywordConstant | varName | varName '[' expression ']' | subroutineCall | '(' expression ')' | unaryOp term
+ */
+
+void CompilationEngine::compileTerm() {
+    writeIndent();
+    ofs << "<term>\n";
+    indentationLevel++;
+
+    const auto& currentToken = tokenizer.getCurrentToken();
+    const auto& nextToken = tokenizer.peekToken();
+
+    // Case 1: 정수 상수
+    if (currentToken.type == Token::TokenType::INT_CONST) {
+        process(Token::TokenType::INT_CONST);
+    }
+    // Case 2: 문자열 상수
+    else if (currentToken.type == Token::TokenType::STRING_CONST) {
+        process(Token::TokenType::STRING_CONST);
+    }
+    // Case 3: 키워드 상수
+    else if (currentToken.type == Token::TokenType::KEYWORD) {
+        auto kw = std::get<Token::KeywordType>(currentToken.value);
+        if (kw == Token::KeywordType::TRUE || kw == Token::KeywordType::FALSE ||
+            kw == Token::KeywordType::NULL_KEYWORD || kw == Token::KeywordType::THIS)
+        {
+            process(kw);
+        }
+        else {
+            throw std::runtime_error("Syntax Error: Invalid keyword used as a term.");
+        }
+    }
+    // Case 4: 괄호 표현식 '(' expression ')'
+    else if (currentToken.type == Token::TokenType::SYMBOL && std::get<char>(currentToken.value) == '(') {
+        process('(');
+        compileExpression();
+        process(')');
+    }
+    // Case 5: 단항 연산자 unaryOp term
+    else if (currentToken.type == Token::TokenType::SYMBOL &&
+        (std::get<char>(currentToken.value) == '-' || std::get<char>(currentToken.value) == '~'))
+    {
+        process(std::get<char>(currentToken.value)); // '-' 또는 '~' 처리
+        compileTerm(); // 뒤따르는 term 재귀 처리
+    }
+    // Case 6: 식별자로 시작하는 경우 (배열, 호출, 변수)
+    else if (currentToken.type == Token::TokenType::IDENTIFIER) {
+        // peek 결과를 보고 분기
+        if (nextToken.type == Token::TokenType::SYMBOL && std::get<char>(nextToken.value) == '[') {
+            process(Token::TokenType::IDENTIFIER); // varName
+            process('[');
+            compileExpression();
+            process(']');
+        }
+        else if (nextToken.type == Token::TokenType::SYMBOL && std::get<char>(nextToken.value) == '.') {
+            process(Token::TokenType::IDENTIFIER); // className or varName
+            process('.');
+            process(Token::TokenType::IDENTIFIER); // subroutineName
+            process('(');
+            compileExpressionList();
+            process(')');
+        }
+        else if (nextToken.type == Token::TokenType::SYMBOL && std::get<char>(nextToken.value) == '(') {
+            process(Token::TokenType::IDENTIFIER); // subroutineName
+            process('(');
+            compileExpressionList();
+            process(')');
+        }
+        else {
+            process(Token::TokenType::IDENTIFIER);
+        }
+    }
+    else {
+        //throw std::runtime_error("Syntax Error: Invalid term structure.");
+    }
+
+    indentationLevel--;
+    writeIndent();
+    ofs << "</term>\n";
+}
+
+int CompilationEngine::compileExpressionList()
+{
+    return 0;
 }
 
 //-----------------------------------------------------

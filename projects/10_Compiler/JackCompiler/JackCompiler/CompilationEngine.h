@@ -15,7 +15,7 @@ private:
 
     int indentationLevel = 0;
 
-    // helper method
+    // helper method for xml
     void writeIndent();
 
     std::string escapeXml(char symbol);

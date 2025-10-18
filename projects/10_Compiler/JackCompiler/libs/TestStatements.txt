@@ -1,0 +1,38 @@
+// Tests only the skeleton structure, avoiding expression compilation.
+class TestSkeleton {
+
+    static int count;
+    field char key;
+
+    constructor TestSkeleton new() {
+        var int temp;
+
+        // Test basic let structure (expression part omitted/invalid)
+        let count = ; // Invalid Jack syntax, but tests 'let IDENTIFIER =' part
+        let key = ;   // Invalid Jack syntax
+
+        return; // Simple return
+    }
+
+    function void run() {
+        var boolean flag;
+
+        // Test do structure (call part omitted/invalid)
+        do ; // Invalid Jack syntax, but tests 'do ;' structure
+
+        // Test if structure (condition and body omitted/invalid)
+        if () { // Invalid Jack syntax
+        } else {
+        }
+
+        // Test while structure (condition and body omitted/invalid)
+        while () { // Invalid Jack syntax
+        }
+
+        return;
+    }
+
+    method char getKey() {
+        return ; // Invalid Jack syntax
+    }
+}
