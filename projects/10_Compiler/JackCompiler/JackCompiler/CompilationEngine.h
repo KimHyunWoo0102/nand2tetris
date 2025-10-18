@@ -24,6 +24,9 @@ private:
     void process(char expectedSymbol);
     void process(Token::TokenType expectedType);
 
+    //helper Method
+    bool isOperator(char c);
+
     // compile class
     void compileClass();
 

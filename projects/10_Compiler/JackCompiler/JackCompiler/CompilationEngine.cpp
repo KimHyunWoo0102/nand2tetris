@@ -101,6 +101,14 @@ void CompilationEngine::process(Token::TokenType expectedType)
             ", but found a different type.");
     }
 }
+
+//-----------------------------------------------------
+
+bool CompilationEngine::isOperator(char symbol) {
+    const std::string ops = "+-*/&|<>=";
+    return ops.find(symbol) != std::string::npos;
+}
+
 //-----------------------------------------------------
 // class component compile
 //-----------------------------------------------------
@@ -496,7 +504,11 @@ void CompilationEngine::compileReturn()
     indentationLevel++;
 
     process(Token::KeywordType::RETURN);
-    compileExpression();
+
+    if (!(tokenizer.tokenType() == Token::TokenType::SYMBOL && tokenizer.symbol() == ';')) {
+        compileExpression();
+    }
+
     process(';');
 
     indentationLevel--;
@@ -506,8 +518,27 @@ void CompilationEngine::compileReturn()
 
 //-----------------------------------------------------
 
+/**
+ * @brief 표현식(expression)을 컴파일한다. 
+ * @grammar term(op term)*
+ */
+
 void CompilationEngine::compileExpression()
 {
+    writeIndent();
+    ofs << "<expression>\n";
+    indentationLevel++;
+
+    compileTerm();
+
+    while (tokenizer.tokenType() == Token::TokenType::SYMBOL&&isOperator(tokenizer.symbol())) {
+        process(tokenizer.symbol());
+        compileTerm();
+    }
+
+    indentationLevel--;
+    writeIndent();
+    ofs << "</expression>\n";
 }
 
 //-----------------------------------------------------
@@ -594,9 +625,38 @@ void CompilationEngine::compileTerm() {
     ofs << "</term>\n";
 }
 
+//-----------------------------------------------------
+
+/**
+ * @brief 쉼표로 구분된 (비어 있을 수 있는) 표현식 목록을 컴파일한다.
+ * @grammar (expression (',' expression)*)?
+ * @return 목록에 있는 표현식의 개수를 반환한다.
+ */
+
 int CompilationEngine::compileExpressionList()
 {
-    return 0;
+    int cnt = 0;
+
+    writeIndent();
+    ofs << "<expressionList>\n";
+    indentationLevel++;
+
+    if (!(tokenizer.tokenType() == Token::TokenType::SYMBOL && tokenizer.symbol() == ')'))
+    {
+        compileExpression();
+        ++cnt;
+
+        while (tokenizer.tokenType() == Token::TokenType::SYMBOL && tokenizer.symbol() == ',') {
+            process(',');
+            compileExpression();
+            ++cnt;
+        }
+    }
+
+    indentationLevel--;
+    writeIndent();
+    ofs << "</expressionList>\n";
+    return cnt;
 }
 
 //-----------------------------------------------------

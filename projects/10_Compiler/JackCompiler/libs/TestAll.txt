@@ -1,0 +1,95 @@
+// A comprehensive test file for the entire Chapter 10 parser.
+// Covers all grammatical structures including expressions and terms.
+
+class TestFinal {
+
+    // Class variable declarations
+    static boolean testMode;
+    field int x, y;
+    field Array screenBuffer; // Array type
+
+    // Constructor with parameters and local variables
+    constructor TestFinal new(int initialX, int initialY) {
+        var int tempSize;
+        var String message;
+
+        let x = initialX;
+        let y = initialY;
+        let tempSize = 10;
+        let message = "Object Created";
+        let testMode = true; // Access static var
+
+        // Test expression with term (op term)*
+        let x = x + tempSize * (y - 5);
+
+        // Test let statement with array access
+        let screenBuffer[0] = x;
+
+        return; // Simple return
+    }
+
+    // Function with expression
+    function int calculate(int a, int b) {
+        var int result;
+        var boolean greater;
+
+        // Expression with operators and unary op
+        let result = (a * b) + (-a / 2);
+        let greater = a > b; // Comparison operator
+
+        // If statement with else
+        if (greater) {
+            do Output.printString("A is greater");
+        } else {
+            do Output.printInt(b);
+        }
+
+        // Return statement with expression
+        return result;
+    }
+
+    // Method using fields and parameters
+    method void move(int dx, int dy) {
+        // While statement
+        while (testMode & (dx > 0)) { // Logical AND
+            // Nested let and do
+            let x = x + 1;
+            let dx = dx - 1;
+            do Screen.drawPixel(x, y); // Method call on class
+        }
+
+        // Term types: keyword constant, method call on 'this'
+        if ((dx = 0) | (dy = 0)) { // Logical OR, comparison
+            let testMode = false;
+            do move(1, 1); // Recursive call (method call on 'this')
+        }
+
+        return; // Void return
+    }
+
+    // Function demonstrating complex terms
+    function void complexTermTest() {
+        var Array a;
+        var TestFinal obj;
+
+        // Term: subroutineCall (className.subroutineName)
+        let obj = TestFinal.new(10, 20);
+
+        // Term: varName '[' expression ']'
+        let a[obj.getX()] = 100; // Method call inside array index
+
+        // Term: '(' expression ')'
+        let a[0] = (1 + 2) * 3;
+
+        // Term: unaryOp term
+        let a[1] = -a[0];
+        let a[2] = ~a[1]; // Bitwise NOT (unary op)
+
+        return;
+    }
+
+    // Simple getter method (implicit 'this')
+    method int getX() {
+        return x; // Term: varName (field)
+    }
+}
