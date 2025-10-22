@@ -35,7 +35,7 @@ void JackCompiler::compile() {
 		// 1. 새 Tokenizer 생성
 		Tokenizer tokenizer(jackFile.string());
 		// 2. 새 CompilationEngine 생성 (VMWriter도 내부에서 새로 만들어짐)
-		CompilationEngine engine(tokenizer, outputFilename);
+		CompilationEngine engine(tokenizer, jackFile.stem().string(),outputFilename);
 
 		// 3. 해당 파일 컴파일 실행
 		engine.compile();

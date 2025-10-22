@@ -4,10 +4,9 @@
 // constructor
 //----------------------------------------------------
 
-CompilationEngine::CompilationEngine(Tokenizer& tokenizer, const std::string& outputFilename)
-	:tokenizer(tokenizer),vmWriter(outputFilename)
+CompilationEngine::CompilationEngine(Tokenizer& tokenizer, const std::string& className, const std::string& outputFilePath)
+    :tokenizer(tokenizer),className(className),vmWriter(outputFilePath)
 {
-	
 }
 
 //-----------------------------------------------------
@@ -92,7 +91,7 @@ void CompilationEngine::compileClass()
     process(Token::KeywordType::CLASS);
     process(Token::TokenType::IDENTIFIER);
     process('{');
-    // TODO : class field, static, subroutine compile
+
     while (tokenizer.tokenType() == Token::TokenType::KEYWORD &&
         (tokenizer.keyword() == Token::KeywordType::STATIC || tokenizer.keyword() == Token::KeywordType::FIELD))
     {
@@ -157,7 +156,8 @@ void CompilationEngine::compileClassVarDec()
 
     process(';');
 
-    this->symbolTable.printTable();
+    //for test
+    //this->symbolTable.printTable();
 }
 
 //-----------------------------------------------------
@@ -169,6 +169,12 @@ void CompilationEngine::compileClassVarDec()
 
 void CompilationEngine::compileSubroutine()
 {
+    this->symbolTable.resetTable();
+
+    if (tokenizer.keyword() == Token::KeywordType::METHOD) {
+        this->symbolTable.define("this", this->className, Kind::ARG);
+    }
+
     process(tokenizer.keyword());
     
     if (tokenizer.tokenType() == Token::TokenType::KEYWORD) {
@@ -185,6 +191,8 @@ void CompilationEngine::compileSubroutine()
     process(')');
 
     compileSubroutineBody();
+
+    this->symbolTable.printTable();
 }
 
 //-----------------------------------------------------

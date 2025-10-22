@@ -8,13 +8,14 @@
 
 class CompilationEngine {
 public:
-    CompilationEngine(Tokenizer& tokenizer, const std::string& outputFilename);
+    CompilationEngine(Tokenizer& tokenizer,const std::string& className, const std::string& outputFilePath);
     void compile();
 
 private:
     Tokenizer& tokenizer;
     VMWriter vmWriter;
     SymbolTable symbolTable;
+    std::string className;
 
     void process(Token::KeywordType expectedKeyword);
     void process(char expectedSymbol);

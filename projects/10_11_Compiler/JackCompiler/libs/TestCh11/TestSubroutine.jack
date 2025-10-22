@@ -1,0 +1,27 @@
+// Tests compileSubroutine, compileParameterList (with symbol table),
+// and handling of 'this' for methods. Assumes compileSubroutineBody is stubbed.
+class TestSubroutineDec {
+
+    field int x; // Needed for 'this' context in method
+
+    // Test 1: Constructor with parameters
+    constructor TestSubroutineDec new(int initialX, char initialKey) {
+        // Body will call compileVarDec and compileStatements later
+    }
+
+    // Test 2: Function with no parameters, returns class type
+    function TestSubroutineDec getInstance() {
+        // Body
+    }
+
+    // Test 3: Method with parameters, returns void
+    // Crucially tests if 'this' is defined as argument 0
+    method void setValues(int newX, boolean flag) {
+        // Body
+    }
+
+    // Test 4: Method with no parameters
+    method void reset() {
+        // Body
+    }
+}
