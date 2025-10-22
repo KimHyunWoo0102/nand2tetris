@@ -5,7 +5,7 @@
 //----------------------------------------------------
 
 CompilationEngine::CompilationEngine(Tokenizer& tokenizer, const std::string& outputFilename)
-	:tokenizer(tokenizer)
+	:tokenizer(tokenizer),vmWriter(outputFilename)
 {
 	
 }
@@ -44,7 +44,7 @@ void CompilationEngine::process(char expectedSymbol) {
         tokenizer.advance();
     }
     else {
-        throw std::runtime_error("Syntax Error: Expected a symbol + " + escapeXml(expectedSymbol) + ". got = " + escapeXml(tokenizer.symbol()));
+        throw std::runtime_error("Syntax Error: ");
     }
 }
 
@@ -117,30 +117,47 @@ void CompilationEngine::compileClass()
 
 void CompilationEngine::compileClassVarDec()
 {
+    Kind kind;
+    std::string type;
+    std::string name;
+
+    if (tokenizer.keyword() == Token::KeywordType::STATIC) {
+        kind = Kind::STATIC;
+    }
+    else {
+        kind = Kind::FIELD;
+    }
+
     // 첫 번째 변수 처리
     process(tokenizer.keyword());
 
     if (tokenizer.tokenType() == Token::TokenType::KEYWORD) {
-        // 타입이 'int', 'char', 'boolean' 같은 키워드인 경우
+        type = keywordToString(tokenizer.keyword()); 
         process(tokenizer.keyword());
     }
     else if (tokenizer.tokenType() == Token::TokenType::IDENTIFIER) {
-        // 타입이 'SquareGame' 같은 클래스 이름(식별자)인 경우
+        type = tokenizer.identifier(); 
         process(Token::TokenType::IDENTIFIER);
     }
     else {
-        throw std::runtime_error("Syntax Error: Expected a type (int, char, boolean, or className).");
+        throw std::runtime_error("Syntax Error: Expected a type.");
     }
 
+    name = tokenizer.identifier();
     process(Token::TokenType::IDENTIFIER);
+    symbolTable.define(name, type, kind);
 
     while (tokenizer.tokenType() == Token::TokenType::SYMBOL &&
         tokenizer.symbol() == ',') {
-        process(',');
-        process(Token::TokenType::IDENTIFIER);
+        process(','); // 쉼표 소비
+        name = tokenizer.identifier(); // 다음 이름 저장
+        process(Token::TokenType::IDENTIFIER); // 다음 이름 소비
+        symbolTable.define(name, type, kind);
     }
 
     process(';');
+
+    this->symbolTable.printTable();
 }
 
 //-----------------------------------------------------
@@ -283,6 +300,7 @@ void CompilationEngine::compileStatements()
     }
 
 end_loop:
+    ;
 }
 
 //-----------------------------------------------------

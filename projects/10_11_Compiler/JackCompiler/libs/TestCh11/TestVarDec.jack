@@ -1,0 +1,19 @@
+// Tests only the compileClassVarDec function thoroughly.
+class TestClassVarDec {
+
+    // Test 1: Single static variable, primitive type
+    static int counter;
+
+    // Test 2: Single field variable, primitive type
+    field char key;
+
+    // Test 3: Multiple static variables, primitive type, comma-separated
+    static boolean flag1, flag2, testInProgress;
+
+    // Test 4: Multiple field variables, custom type, comma-separated
+    field MyObject obj1, obj2;
+
+    // Test 5: Mix of types and counts
+    static int xOffset;
+    field Point startPoint, endPoint; // Custom type 'Point'
+}

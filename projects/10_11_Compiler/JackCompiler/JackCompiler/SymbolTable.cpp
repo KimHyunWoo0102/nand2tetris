@@ -1,5 +1,6 @@
 #include "SymbolTable.h"
 #include <stdexcept>
+#include<iostream>
 
 //----------------------------------------------------------------
 
@@ -116,6 +117,54 @@ int SymbolTable::indexOf(const std::string& name) const {
         // 찾지 못했을 경우 -1 반환 (오류 표시)
         return -1;
     }
+}
+
+//----------------------------------------------------------------
+// test helper method
+//----------------------------------------------------------------
+
+std::string kindToString(Kind k) {
+    switch (k) {
+    case Kind::STATIC: return "STATIC";
+    case Kind::FIELD:  return "FIELD";
+    case Kind::ARG:    return "ARG";
+    case Kind::VAR:    return "VAR";
+    default:           return "NONE";
+    }
+}
+
+//----------------------------------------------------------------
+
+void SymbolTable::printTable()
+{
+    std::cout << "--- Class Scope Table ---" << std::endl;
+    if (classScopeTable.empty()) {
+        std::cout << "(empty)" << std::endl;
+    }
+    else {
+        for (const auto& pair : classScopeTable) {
+            const std::string& name = pair.first;
+            const SymbolInfo& info = pair.second;
+            std::cout << name << ": { Type=" << info.type
+                << ", Kind=" << kindToString(info.kind)
+                << ", Index=" << info.idx << " }" << std::endl;
+        }
+    }
+
+    std::cout << "\n--- Subroutine Scope Table ---" << std::endl;
+    if (subroutineScopeTable.empty()) {
+        std::cout << "(empty)" << std::endl;
+    }
+    else {
+        for (const auto& pair : subroutineScopeTable) {
+            const std::string& name = pair.first;
+            const SymbolInfo& info = pair.second;
+            std::cout << name << ": { Type=" << info.type
+                << ", Kind=" << kindToString(info.kind)
+                << ", Index=" << info.idx << " }" << std::endl;
+        }
+    }
+    std::cout << "-------------------------" << std::endl;
 }
 
 //----------------------------------------------------------------

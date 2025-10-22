@@ -32,4 +32,6 @@ public:
 	Kind kindOf(const std::string& name) const;
 	const std::string& typeOf(const std::string& name) const; // const& 반환이 효율적
 	int indexOf(const std::string& name) const;
+
+	void printTable();
 };
