@@ -5,11 +5,9 @@
 //----------------------------------------------------
 
 CompilationEngine::CompilationEngine(Tokenizer& tokenizer, const std::string& outputFilename)
-	:tokenizer(tokenizer),ofs(outputFilename)
+	:tokenizer(tokenizer)
 {
-	if (!ofs.is_open()) {
-		throw std::runtime_error("CompilationEngine() : can't open write file : " + outputFilename);
-	}
+	
 }
 
 //-----------------------------------------------------
@@ -26,30 +24,9 @@ void CompilationEngine::compile()
 // private helper method
 //-----------------------------------------------------
 
-void CompilationEngine::writeIndent()
-{
-    ofs << std::string(indentationLevel * 2, ' ');
-}
-
-//-----------------------------------------------------
-
-std::string CompilationEngine::escapeXml(char symbol) {
-    switch (symbol) {
-    case '<':  return "&lt;";
-    case '>':  return "&gt;";
-    case '&':  return "&amp;";
-    case '"':  return "&quot;";
-    default:   return std::string(1, symbol);
-    }
-}
-
-//-----------------------------------------------------
-
 void CompilationEngine::process(Token::KeywordType expectedKeyword)
 {
     if (tokenizer.tokenType() == Token::TokenType::KEYWORD && tokenizer.keyword() == expectedKeyword) {
-        writeIndent();
-        ofs << "<keyword> " << keywordToString(expectedKeyword) << " </keyword>\n";
         tokenizer.advance();
     }
     else {
@@ -64,8 +41,6 @@ void CompilationEngine::process(Token::KeywordType expectedKeyword)
 
 void CompilationEngine::process(char expectedSymbol) {
     if (tokenizer.tokenType() == Token::TokenType::SYMBOL && tokenizer.symbol() == expectedSymbol) {
-        writeIndent();
-        ofs << "<symbol> " << escapeXml(expectedSymbol) << " </symbol>\n";
         tokenizer.advance();
     }
     else {
@@ -80,16 +55,10 @@ void CompilationEngine::process(Token::TokenType expectedType)
     if (tokenizer.tokenType() == expectedType) {
         switch (expectedType) {
         case Token::TokenType::IDENTIFIER:
-            writeIndent();
-            ofs << "<identifier> " << tokenizer.identifier() << " </identifier>\n";
             break;
         case Token::TokenType::INT_CONST:
-            writeIndent();
-            ofs << "<integerConstant> " << tokenizer.intVal() << " </integerConstant>\n";
             break;
         case Token::TokenType::STRING_CONST:
-            writeIndent();
-            ofs << "<stringConstant> " << tokenizer.stringVal() << " </stringConstant>\n";
             break;
         default:
             throw std::logic_error("process(TokenType) called with an unhandled type. got = " + Token::tokenTypeToString(expectedType));
@@ -120,10 +89,6 @@ bool CompilationEngine::isOperator(char symbol) {
 
 void CompilationEngine::compileClass()
 {
-    writeIndent();
-    this->indentationLevel++;
-
-    ofs << "<class>\n";
     process(Token::KeywordType::CLASS);
     process(Token::TokenType::IDENTIFIER);
     process('{');
@@ -141,10 +106,6 @@ void CompilationEngine::compileClass()
     }
 
     process('}');
-
-    this->indentationLevel--;
-    writeIndent();
-    ofs << "</class>\n";
 }
 
 //-----------------------------------------------------
@@ -156,11 +117,6 @@ void CompilationEngine::compileClass()
 
 void CompilationEngine::compileClassVarDec()
 {
-    writeIndent();
-    this->indentationLevel++;
-
-    ofs << "<classVarDec>\n";
-    
     // 첫 번째 변수 처리
     process(tokenizer.keyword());
 
@@ -185,10 +141,6 @@ void CompilationEngine::compileClassVarDec()
     }
 
     process(';');
-
-    this->indentationLevel--;
-    writeIndent();
-    ofs << "</classVarDec>\n";
 }
 
 //-----------------------------------------------------
@@ -200,10 +152,6 @@ void CompilationEngine::compileClassVarDec()
 
 void CompilationEngine::compileSubroutine()
 {
-    writeIndent();
-    this->indentationLevel++;
-    ofs << "<subroutineDec>\n";
-    
     process(tokenizer.keyword());
     
     if (tokenizer.tokenType() == Token::TokenType::KEYWORD) {
@@ -220,10 +168,6 @@ void CompilationEngine::compileSubroutine()
     process(')');
 
     compileSubroutineBody();
-
-    this->indentationLevel--;
-    writeIndent();
-    ofs << "</subroutineDec>\n";
 }
 
 //-----------------------------------------------------
@@ -235,10 +179,6 @@ void CompilationEngine::compileSubroutine()
 
 void CompilationEngine::compileParameterList()
 {
-    writeIndent();
-    this->indentationLevel++;
-    ofs << "<parameterList>\n";
-
     if (!(tokenizer.tokenType() == Token::TokenType::SYMBOL && tokenizer.symbol() == ')')) {
 
         if (tokenizer.tokenType() == Token::TokenType::KEYWORD) {
@@ -263,10 +203,6 @@ void CompilationEngine::compileParameterList()
             process(Token::TokenType::IDENTIFIER);
         }
     }
-
-    this->indentationLevel--;
-    writeIndent();
-    ofs << "</parameterList>\n";
 }
 
 
@@ -281,10 +217,6 @@ void CompilationEngine::compileParameterList()
 
 void CompilationEngine::compileSubroutineBody()
 {
-    writeIndent();
-    this->indentationLevel++;
-    ofs << "<subroutineBody>\n";
-
     process('{');
 
     while (tokenizer.tokenType() == Token::TokenType::KEYWORD && tokenizer.keyword() == Token::KeywordType::VAR) {
@@ -293,10 +225,6 @@ void CompilationEngine::compileSubroutineBody()
     compileStatements();
 
     process('}');
-
-    this->indentationLevel--;
-    writeIndent();
-    ofs << "</subroutineBody>\n";
 }
 
 //-----------------------------------------------------
@@ -308,10 +236,6 @@ void CompilationEngine::compileSubroutineBody()
 
 void CompilationEngine::compileVarDec()
 {
-    writeIndent();
-    this->indentationLevel++;
-    ofs << "<varDec>\n";
-
     process(Token::KeywordType::VAR);
     
     if (tokenizer.tokenType()==Token::TokenType::KEYWORD) {
@@ -329,10 +253,6 @@ void CompilationEngine::compileVarDec()
     }
 
     process(';');
-    
-    this->indentationLevel--;
-    writeIndent();
-    ofs << "</varDec>\n";
 }
 
 //-----------------------------------------------------
@@ -344,10 +264,6 @@ void CompilationEngine::compileVarDec()
 
 void CompilationEngine::compileStatements()
 {
-    writeIndent();
-    ofs << "<statements>\n";
-    indentationLevel++;
-
     while (tokenizer.hasMoreTokens()) {
         const auto& currentToken = tokenizer.getCurrentToken();
 
@@ -367,9 +283,6 @@ void CompilationEngine::compileStatements()
     }
 
 end_loop:
-    indentationLevel--;
-    writeIndent();
-    ofs << "</statements>\n";
 }
 
 //-----------------------------------------------------
@@ -383,10 +296,6 @@ end_loop:
 
 void CompilationEngine::compileLet()
 {
-    writeIndent();
-    ofs << "<letStatement>\n";
-    indentationLevel++;
-
     process(Token::KeywordType::LET);
     process(Token::TokenType::IDENTIFIER);
 
@@ -400,10 +309,6 @@ void CompilationEngine::compileLet()
     process('=');
     compileExpression();
     process(';');
-
-    indentationLevel--;
-    writeIndent();
-    ofs << "</letStatement>\n";
 }
 
 //-----------------------------------------------------
@@ -415,10 +320,6 @@ void CompilationEngine::compileLet()
 
 void CompilationEngine::compileIf()
 {
-    writeIndent();
-    ofs << "<ifStatement>\n";
-    indentationLevel++;
-
     process(Token::KeywordType::IF);
     process('(');
     compileExpression();
@@ -434,11 +335,6 @@ void CompilationEngine::compileIf()
         compileStatements();
         process('}');
     }
-
-
-    indentationLevel--;
-    writeIndent();
-    ofs << "</ifStatement>\n";
 }
 
 //-----------------------------------------------------
@@ -450,10 +346,6 @@ void CompilationEngine::compileIf()
 
 void CompilationEngine::compileWhile()
 {
-    writeIndent();
-    ofs << "<whileStatement>\n";
-    indentationLevel++;
-
     process(Token::KeywordType::WHILE);
     process('(');
     compileExpression();
@@ -462,10 +354,6 @@ void CompilationEngine::compileWhile()
     process('{');
     compileStatements();
     process('}');
-
-    indentationLevel--;
-    writeIndent();
-    ofs << "</whileStatement>\n";
 }
 
 //-----------------------------------------------------
@@ -477,17 +365,9 @@ void CompilationEngine::compileWhile()
 
 void CompilationEngine::compileDo()
 {
-    writeIndent();
-    ofs << "<doStatement>\n";
-    indentationLevel++;
-
     process(Token::KeywordType::DO);
     compileTerm();
     process(';');
-
-    indentationLevel--;
-    writeIndent();
-    ofs << "</doStatement>\n";
 }
 
 //-----------------------------------------------------
@@ -499,10 +379,6 @@ void CompilationEngine::compileDo()
 
 void CompilationEngine::compileReturn()
 {
-    writeIndent();
-    ofs << "<returnStatement>\n";
-    indentationLevel++;
-
     process(Token::KeywordType::RETURN);
 
     if (!(tokenizer.tokenType() == Token::TokenType::SYMBOL && tokenizer.symbol() == ';')) {
@@ -510,10 +386,6 @@ void CompilationEngine::compileReturn()
     }
 
     process(';');
-
-    indentationLevel--;
-    writeIndent();
-    ofs << "</returnStatement>\n";
 }
 
 //-----------------------------------------------------
@@ -525,20 +397,12 @@ void CompilationEngine::compileReturn()
 
 void CompilationEngine::compileExpression()
 {
-    writeIndent();
-    ofs << "<expression>\n";
-    indentationLevel++;
-
     compileTerm();
 
     while (tokenizer.tokenType() == Token::TokenType::SYMBOL&&isOperator(tokenizer.symbol())) {
         process(tokenizer.symbol());
         compileTerm();
     }
-
-    indentationLevel--;
-    writeIndent();
-    ofs << "</expression>\n";
 }
 
 //-----------------------------------------------------
@@ -549,10 +413,6 @@ void CompilationEngine::compileExpression()
  */
 
 void CompilationEngine::compileTerm() {
-    writeIndent();
-    ofs << "<term>\n";
-    indentationLevel++;
-
     const auto& currentToken = tokenizer.getCurrentToken();
     const auto& nextToken = tokenizer.peekToken();
 
@@ -619,10 +479,6 @@ void CompilationEngine::compileTerm() {
     else {
         //throw std::runtime_error("Syntax Error: Invalid term structure.");
     }
-
-    indentationLevel--;
-    writeIndent();
-    ofs << "</term>\n";
 }
 
 //-----------------------------------------------------
@@ -637,10 +493,6 @@ int CompilationEngine::compileExpressionList()
 {
     int cnt = 0;
 
-    writeIndent();
-    ofs << "<expressionList>\n";
-    indentationLevel++;
-
     if (!(tokenizer.tokenType() == Token::TokenType::SYMBOL && tokenizer.symbol() == ')'))
     {
         compileExpression();
@@ -653,9 +505,6 @@ int CompilationEngine::compileExpressionList()
         }
     }
 
-    indentationLevel--;
-    writeIndent();
-    ofs << "</expressionList>\n";
     return cnt;
 }
 

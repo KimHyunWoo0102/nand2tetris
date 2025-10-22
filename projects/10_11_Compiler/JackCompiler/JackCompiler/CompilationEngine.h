@@ -1,5 +1,7 @@
 #pragma once
 
+#include"VMWriter.h"
+#include"SymbolTable.h"
 #include "Tokenizer.h"
 #include <fstream>
 #include <string>
@@ -10,15 +12,9 @@ public:
     void compile();
 
 private:
-    std::ofstream ofs;
     Tokenizer& tokenizer;
-
-    int indentationLevel = 0;
-
-    // helper method for xml
-    void writeIndent();
-
-    std::string escapeXml(char symbol);
+    VMWriter vmWriter;
+    SymbolTable symbolTable;
 
     void process(Token::KeywordType expectedKeyword);
     void process(char expectedSymbol);

@@ -13,8 +13,6 @@ private:
     std::string segmentToString(Segment seg);
     std::string commandToString(Command command);
 
-    void NewFunction(Command command);
-
 public:
     VMWriter(const std::string& filename);
 
