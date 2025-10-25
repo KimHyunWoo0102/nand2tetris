@@ -437,8 +437,14 @@ void CompilationEngine::compileReturn()
     if (!(tokenizer.tokenType() == Token::TokenType::SYMBOL && tokenizer.symbol() == ';')) {
         compileExpression();
     }
-
+    else {
+        // return 의 경우 스택의 가장 위의 값을 호출자가 처음에 저장하는 arg 0 위치에 저장시킴
+        // 처리의 일관성을 위해서 return; 인 경우에도 0을 저장
+        this->vmWriter.writePush(Segment::CONSTANT, 0);
+    }
     process(';');
+
+    this->vmWriter.writeReturn();
 }
 
 //-----------------------------------------------------
