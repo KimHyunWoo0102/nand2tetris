@@ -1,8 +1,0 @@
-class Point{
-    field int x,y;
-    static int pointCount;
-
-    method int distance(Point other){
-        var int dx,dy;
-    }
-}

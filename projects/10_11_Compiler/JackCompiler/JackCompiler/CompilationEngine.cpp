@@ -275,33 +275,20 @@ void CompilationEngine::compileSubroutineBody()
 
 void CompilationEngine::compileVarDec()
 {
-    std::string type;
-    std::string name;
-    Kind kind = Kind::VAR;
-
     process(Token::KeywordType::VAR);
     
     if (tokenizer.tokenType()==Token::TokenType::KEYWORD) {
-        type = keywordToString(tokenizer.keyword());
         process(tokenizer.keyword());
     }
     else {
-        type = tokenizer.identifier();
         process(Token::TokenType::IDENTIFIER);
     }
 
-    name = tokenizer.identifier();
     process(Token::TokenType::IDENTIFIER);
-
-
-    this->symbolTable.define(name, type, kind);
 
     while (tokenizer.tokenType() == Token::TokenType::SYMBOL && tokenizer.symbol() == ',') {
         process(',');
-        name = tokenizer.identifier();
         process(Token::TokenType::IDENTIFIER);
-
-        this->symbolTable.define(name, type, kind);
     }
 
     process(';');
