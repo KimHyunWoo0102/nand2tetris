@@ -1,0 +1,32 @@
+// Tests up to compileParameterList, including symbol table definitions.
+// Assumes compileSubroutineBody, compileVarDec, compileStatements etc. are stubs.
+class TestParams {
+
+    field int instanceVar; // Just to provide context for 'this'
+
+    // Test 1: Constructor - no 'this', multiple params
+    constructor TestParams new(int startVal, boolean active) {
+        // Body is a stub - focus is on parameter definition
+    }
+
+    // Test 2: Function - no 'this', no params
+    function void setup() {
+        // Body is a stub
+    }
+
+    // Test 3: Method - implicit 'this' (arg 0), multiple params (arg 1, 2)
+    method void configure(char key, Point location) {
+        // Body is a stub
+    }
+
+    // Test 4: Method - implicit 'this' (arg 0), single param (arg 1)
+    method void setKey(char newKey) {
+        // Body is a stub
+    }
+
+    // Test 5: Method - implicit 'this' (arg 0), no explicit params
+    method int getValue() {
+        // Body is a stub
+        // return instanceVar; // Would require expression/term later
+    }
+}

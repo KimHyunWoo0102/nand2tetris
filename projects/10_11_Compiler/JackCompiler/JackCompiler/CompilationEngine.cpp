@@ -204,28 +204,42 @@ void CompilationEngine::compileSubroutine()
 
 void CompilationEngine::compileParameterList()
 {
+    Kind kind = Kind::ARG;
+    std::string type;
+    std::string name;
+
     if (!(tokenizer.tokenType() == Token::TokenType::SYMBOL && tokenizer.symbol() == ')')) {
 
-        if (tokenizer.tokenType() == Token::TokenType::KEYWORD) {
+        if (tokenizer.tokenType() == Token::TokenType::KEYWORD) { 
+            type = keywordToString(tokenizer.keyword());
             process(tokenizer.keyword());
         }
         else {
+            type = tokenizer.identifier();
             process(Token::TokenType::IDENTIFIER);
         }
 
+        name = tokenizer.identifier();
         process(Token::TokenType::IDENTIFIER);
+
+
+        symbolTable.define(name, type, kind);
 
         while (tokenizer.tokenType() == Token::TokenType::SYMBOL && tokenizer.symbol() == ',') {
             process(',');
 
             if (tokenizer.tokenType() == Token::TokenType::KEYWORD) {
+                type = keywordToString(tokenizer.keyword());
                 process(tokenizer.keyword());
             }
             else {
+                type = tokenizer.identifier();
                 process(Token::TokenType::IDENTIFIER);
             }
-
+            name = tokenizer.identifier();
             process(Token::TokenType::IDENTIFIER);
+
+            symbolTable.define(name, type, kind);
         }
     }
 }
