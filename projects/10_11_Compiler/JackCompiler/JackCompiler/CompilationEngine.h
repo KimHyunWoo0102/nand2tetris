@@ -23,7 +23,7 @@ private:
 
     //helper Method
     bool isOperator(char c);
-
+    Segment segmentOf(Kind kind);
     // compile class
     void compileClass();
 

@@ -461,8 +461,8 @@ void CompilationEngine::compileExpression()
         switch (op) {
         case '+': vmWriter.writeArithmetic(Command::ADD); break;
         case '-': vmWriter.writeArithmetic(Command::SUB); break;
-        //case '*': vmWriter.writeCall("Math.multiply", 2); break; 
-        //case '/': vmWriter.writeCall("Math.divide", 2);   break; 
+        case '*': vmWriter.writeCall("Math.multiply", 2); break; 
+        case '/': vmWriter.writeCall("Math.divide", 2);   break; 
         case '&': vmWriter.writeArithmetic(Command::AND); break;
         case '|': vmWriter.writeArithmetic(Command::OR);  break;
         case '<': vmWriter.writeArithmetic(Command::LT);  break;
