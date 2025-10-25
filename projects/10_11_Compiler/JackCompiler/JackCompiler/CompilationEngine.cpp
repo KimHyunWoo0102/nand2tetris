@@ -78,6 +78,19 @@ bool CompilationEngine::isOperator(char symbol) {
 }
 
 //-----------------------------------------------------
+
+Segment CompilationEngine::segmentOf(Kind kind)
+{
+    switch (kind) {
+    case Kind::STATIC: return Segment::STATIC;
+    case Kind::FIELD:  return Segment::THIS;   // field는 this 세그먼트
+    case Kind::ARG:    return Segment::ARGUMENT;
+    case Kind::VAR:    return Segment::LOCAL;    // var는 local 세그먼트
+    default:           throw std::logic_error("Cannot map NONE kind to segment");
+    }
+}
+
+//-----------------------------------------------------
 // class component compile
 //-----------------------------------------------------
 
@@ -440,8 +453,23 @@ void CompilationEngine::compileExpression()
     compileTerm();
 
     while (tokenizer.tokenType() == Token::TokenType::SYMBOL&&isOperator(tokenizer.symbol())) {
+        char op = tokenizer.symbol();
+
         process(tokenizer.symbol());
         compileTerm();
+        
+        switch (op) {
+        case '+': vmWriter.writeArithmetic(Command::ADD); break;
+        case '-': vmWriter.writeArithmetic(Command::SUB); break;
+        //case '*': vmWriter.writeCall("Math.multiply", 2); break; 
+        //case '/': vmWriter.writeCall("Math.divide", 2);   break; 
+        case '&': vmWriter.writeArithmetic(Command::AND); break;
+        case '|': vmWriter.writeArithmetic(Command::OR);  break;
+        case '<': vmWriter.writeArithmetic(Command::LT);  break;
+        case '>': vmWriter.writeArithmetic(Command::GT);  break;
+        case '=': vmWriter.writeArithmetic(Command::EQ);  break;
+        default: throw std::logic_error("Internal Error: Unhandled operator...");
+        }
     }
 }
 
@@ -458,22 +486,46 @@ void CompilationEngine::compileTerm() {
 
     // Case 1: 정수 상수
     if (currentToken.type == Token::TokenType::INT_CONST) {
+        int val = tokenizer.intVal();
         process(Token::TokenType::INT_CONST);
+
+        this->vmWriter.writePush(Segment::CONSTANT, val);
     }
     // Case 2: 문자열 상수
     else if (currentToken.type == Token::TokenType::STRING_CONST) {
+        std::string strVal = tokenizer.stringVal();
         process(Token::TokenType::STRING_CONST);
+
+        vmWriter.writePush(Segment::CONSTANT, strVal.size()); // .size()로 길이 push
+        vmWriter.writeCall("String.new", 1);
+
+        for (char c : strVal) {
+            // str[i] (즉, c)를 int로 캐스팅해서 push
+            vmWriter.writePush(Segment::CONSTANT, static_cast<int>(c));
+            vmWriter.writeCall("String.appendChar", 2);
+        }
     }
-    // Case 3: 키워드 상수
+    // Case 3: 키워드 상수 (true,flase,null,this)
     else if (currentToken.type == Token::TokenType::KEYWORD) {
         auto kw = std::get<Token::KeywordType>(currentToken.value);
-        if (kw == Token::KeywordType::TRUE || kw == Token::KeywordType::FALSE ||
-            kw == Token::KeywordType::NULL_KEYWORD || kw == Token::KeywordType::THIS)
+        process(kw);
+
+        switch (kw)
         {
-            process(kw);
-        }
-        else {
+        case Token::KeywordType::TRUE:
+            vmWriter.writePush(Segment::CONSTANT, 0);
+            vmWriter.writeArithmetic(Command::NOT);
+            break;
+        case Token::KeywordType::FALSE:
+        case Token::KeywordType::NULL_KEYWORD:
+            vmWriter.writePush(Segment::CONSTANT, 0);
+            break;
+        case Token::KeywordType::THIS:
+            vmWriter.writePush(Segment::POINTER, 0);
+            break;
+        default:
             throw std::runtime_error("Syntax Error: Invalid keyword used as a term.");
+            break;
         }
     }
     // Case 4: 괄호 표현식 '(' expression ')'
@@ -486,18 +538,43 @@ void CompilationEngine::compileTerm() {
     else if (currentToken.type == Token::TokenType::SYMBOL &&
         (std::get<char>(currentToken.value) == '-' || std::get<char>(currentToken.value) == '~'))
     {
+        char op = std::get<char>(currentToken.value);
         process(std::get<char>(currentToken.value)); // '-' 또는 '~' 처리
         compileTerm(); // 뒤따르는 term 재귀 처리
+
+        if (op == '-') {
+            this->vmWriter.writeArithmetic(Command::NEG);
+        }
+        else if (op == '~') {
+            this->vmWriter.writeArithmetic(Command::NOT);
+        }
     }
     // Case 6: 식별자로 시작하는 경우 (배열, 호출, 변수)
     else if (currentToken.type == Token::TokenType::IDENTIFIER) {
         // peek 결과를 보고 분기
+        // Case 6-1 : varName '[' expression ']'
         if (nextToken.type == Token::TokenType::SYMBOL && std::get<char>(nextToken.value) == '[') {
-            process(Token::TokenType::IDENTIFIER); // varName
+            
+            auto varName = tokenizer.identifier();
+            process(Token::TokenType::IDENTIFIER);
+
+            // if a[expression] = ...
+            // push a
+            Kind kind = symbolTable.kindOf(varName);
+            int index = symbolTable.indexOf(varName);
+            vmWriter.writePush(segmentOf(kind), index);
+
+            // compile expression 이후 스택에 결과값이 들어있음
             process('[');
             compileExpression();
             process(']');
+            
+            this->vmWriter.writeArithmetic(Command::ADD);
+
+            this->vmWriter.writePop(Segment::POINTER, 1);
+            this->vmWriter.writePush(Segment::THAT, 0);
         }
+        // Case 6-2 : (className | varName) '.' subroutineName '(' expressionList ')'
         else if (nextToken.type == Token::TokenType::SYMBOL && std::get<char>(nextToken.value) == '.') {
             process(Token::TokenType::IDENTIFIER); // className or varName
             process('.');
@@ -506,14 +583,24 @@ void CompilationEngine::compileTerm() {
             compileExpressionList();
             process(')');
         }
+        // Case 6-3 : subroutineName '(' expressionList ')'
         else if (nextToken.type == Token::TokenType::SYMBOL && std::get<char>(nextToken.value) == '(') {
             process(Token::TokenType::IDENTIFIER); // subroutineName
             process('(');
             compileExpressionList();
             process(')');
         }
+        // Case 6-4 : varName
         else {
+            auto varName = tokenizer.identifier();
+
+            auto index = this->symbolTable.indexOf(varName);
+            auto kind = this->symbolTable.kindOf(varName);
+            auto segment = this->segmentOf(kind);
+
             process(Token::TokenType::IDENTIFIER);
+            
+            this->vmWriter.writePush(segment, index);
         }
     }
     else {
