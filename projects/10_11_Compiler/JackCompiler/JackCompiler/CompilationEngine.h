@@ -16,6 +16,7 @@ private:
     VMWriter vmWriter;
     SymbolTable symbolTable;
     std::string className;
+    int labelCounter = 0;
 
     void process(Token::KeywordType expectedKeyword);
     void process(char expectedSymbol);
@@ -24,6 +25,11 @@ private:
     //helper Method
     bool isOperator(char c);
     Segment segmentOf(Kind kind);
+    std::string generateLabel(const std::string& prefix) {
+        auto label = prefix + std::to_string(labelCounter);
+        labelCounter++;
+        return label;
+    }
     // compile class
     void compileClass();
 

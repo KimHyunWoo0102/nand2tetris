@@ -53,35 +53,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Parser.cpp",
-              "DocumentMoniker": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Parser.cpp",
-              "RelativeDocumentMoniker": "Hack_Assembler\\Parser.cpp",
-              "ToolTip": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Parser.cpp",
-              "RelativeToolTip": "Hack_Assembler\\Parser.cpp",
-              "ViewState": "AgIAAA0AAAAAAAAAAAA0wBwAAAA+AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-09-14T14:41:33.257Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Code.cpp",
-              "DocumentMoniker": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Code.cpp",
-              "RelativeDocumentMoniker": "Hack_Assembler\\Code.cpp",
-              "ToolTip": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Code.cpp",
-              "RelativeToolTip": "Hack_Assembler\\Code.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFUAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-09-15T12:05:11.278Z"
             },
             {
               "$type": "Document",
@@ -145,10 +121,38 @@
               "RelativeDocumentMoniker": "Hack_Assembler\\HackAssembler.cpp",
               "ToolTip": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\HackAssembler.cpp",
               "RelativeToolTip": "Hack_Assembler\\HackAssembler.cpp",
-              "ViewState": "AgIAAG4AAAAAAAAAAADwv30AAAAXAAAAAAAAAA==",
+              "ViewState": "AgIAAA4AAAAAAAAAAADwv30AAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-09-15T13:13:42.015Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Code.cpp",
+              "DocumentMoniker": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Code.cpp",
+              "RelativeDocumentMoniker": "Hack_Assembler\\Code.cpp",
+              "ToolTip": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Code.cpp",
+              "RelativeToolTip": "Hack_Assembler\\Code.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-09-15T12:05:11.278Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Parser.cpp",
+              "DocumentMoniker": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Parser.cpp",
+              "RelativeDocumentMoniker": "Hack_Assembler\\Parser.cpp",
+              "ToolTip": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Parser.cpp",
+              "RelativeToolTip": "Hack_Assembler\\Parser.cpp",
+              "ViewState": "AgIAAA0AAAAAAAAAAAA0wBwAAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-09-14T14:41:33.257Z"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
             },
             {
               "$type": "Document",

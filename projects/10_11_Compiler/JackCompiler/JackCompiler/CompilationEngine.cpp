@@ -381,14 +381,26 @@ void CompilationEngine::compileLet()
 
 void CompilationEngine::compileIf()
 {
+    auto elseLabel = generateLabel("IF_ELSE");
+    auto endLabel = generateLabel("IF_END");
+
     process(Token::KeywordType::IF);
     process('(');
     compileExpression();
     process(')');
 
+    this->vmWriter.writeArithmetic(Command::NOT);
+
+    // if-goto L1 (if condition == false go elseLabel)
+    this->vmWriter.writeIf(elseLabel);
+
     process('{');
     compileStatements();
     process('}');
+
+    this->vmWriter.writeGoto(endLabel);
+
+    this->vmWriter.writeLabel(elseLabel);
 
     if (tokenizer.keyword() == Token::KeywordType::ELSE) {
         process(Token::KeywordType::ELSE);
@@ -396,6 +408,8 @@ void CompilationEngine::compileIf()
         compileStatements();
         process('}');
     }
+
+    this->vmWriter.writeLabel(endLabel);
 }
 
 //-----------------------------------------------------
@@ -407,14 +421,24 @@ void CompilationEngine::compileIf()
 
 void CompilationEngine::compileWhile()
 {
+    auto startLabel = generateLabel("WHILE_START");
+    auto endLabel = generateLabel("WHILE_END");
+    this->vmWriter.writeLabel(startLabel);
+
     process(Token::KeywordType::WHILE);
     process('(');
     compileExpression();
     process(')');
 
+    this->vmWriter.writeArithmetic(Command::NOT);
+    this->vmWriter.writeIf(endLabel);
+
     process('{');
     compileStatements();
     process('}');
+
+    this->vmWriter.writeGoto(startLabel);
+    this->vmWriter.writeLabel(endLabel);
 }
 
 //-----------------------------------------------------
