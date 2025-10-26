@@ -350,7 +350,11 @@ end_loop:
 void CompilationEngine::compileLet()
 {
     process(Token::KeywordType::LET);
+    
+    auto varName = tokenizer.identifier();
     process(Token::TokenType::IDENTIFIER);
+
+    // TODO : 배열의 경우 추후에 추가
 
     if (tokenizer.tokenType() == Token::TokenType::SYMBOL &&
         tokenizer.symbol() == '[') {
@@ -362,6 +366,10 @@ void CompilationEngine::compileLet()
     process('=');
     compileExpression();
     process(';');
+
+    auto index = this->symbolTable.indexOf(varName);
+    auto segment = this->segmentOf(this->symbolTable.kindOf(varName));
+    this->vmWriter.writePop(segment, index);
 }
 
 //-----------------------------------------------------
@@ -421,6 +429,11 @@ void CompilationEngine::compileDo()
     process(Token::KeywordType::DO);
     compileTerm();
     process(';');
+
+    // return 값이 있더라도 do의 경우 해당 값을 버려야함 
+    // 따라서 pop temp 0 을 통해 스택의 값 버림
+
+    this->vmWriter.writePop(Segment::TEMP, 0);
 }
 
 //-----------------------------------------------------
