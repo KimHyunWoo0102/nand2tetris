@@ -1,0 +1,44 @@
+// Tests compiler features EXCLUDING subroutine calls.
+// Focuses on declarations, simple let, if/while control flow,
+// and expressions using only constants, variables, and operators.
+
+class TestStatementsNoCalls {
+
+    static boolean flag;
+    field int x, y;
+
+    // Test 1: Constructor (varDec, let, simple expressions)
+    constructor TestStatementsNoCalls new() {
+        var int temp;
+        var int z;
+
+        let x = 10;                // int constant
+        let y = 20;
+        let flag = true;           // keyword constant
+        let temp = (x + y);      // (expression)
+        let z = -temp;             // unaryOp term
+        let flag = (x < y) | (x = y); // operators <, =, |
+
+        return this; // keyword constant
+    }
+
+    // Test 2: Function (if/else, while, return)
+    function void main() {
+        var int i;
+        let i = 0;
+
+        // Test While
+        while (i < 100) {
+            
+            // Test If/Else
+            if ( (i & 1) = 0 ) { // Test logical AND
+                let i = i + 2;
+            } else {
+                let i = i + 1;
+            }
+        }
+
+        // Test Return (void)
+        return;
+    }
+}

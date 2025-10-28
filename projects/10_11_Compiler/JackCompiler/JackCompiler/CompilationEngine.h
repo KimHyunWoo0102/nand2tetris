@@ -39,7 +39,7 @@ private:
 
     // compile 서브루틴 요소 
     void compileParameterList();
-    void compileSubroutineBody();
+    void compileSubroutineBody(const std::string& subName, Token::KeywordType& subType);
     void compileVarDec();
 
     // compile statements

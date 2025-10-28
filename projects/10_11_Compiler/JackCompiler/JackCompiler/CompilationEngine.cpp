@@ -188,8 +188,9 @@ void CompilationEngine::compileSubroutine()
         this->symbolTable.define("this", this->className, Kind::ARG);
     }
 
+    auto subType = tokenizer.keyword();
     process(tokenizer.keyword());
-    
+        
     if (tokenizer.tokenType() == Token::TokenType::KEYWORD) {
         // int, boolean 등 내장형
         process(tokenizer.keyword());
@@ -198,14 +199,13 @@ void CompilationEngine::compileSubroutine()
         process(Token::TokenType::IDENTIFIER);
     }
 
+    auto subName = this->className + "." + tokenizer.identifier();
     process(Token::TokenType::IDENTIFIER);
     process('(');
     compileParameterList();
     process(')');
 
-    compileSubroutineBody();
-
-    this->symbolTable.printTable();
+    compileSubroutineBody(subName,subType);
 }
 
 //-----------------------------------------------------
@@ -267,13 +267,24 @@ void CompilationEngine::compileParameterList()
  * @grammar '{' varDec* statements '}'
  */
 
-void CompilationEngine::compileSubroutineBody()
+void CompilationEngine::compileSubroutineBody(const std::string& subName, Token::KeywordType& subType)
 {
     process('{');
 
     while (tokenizer.tokenType() == Token::TokenType::KEYWORD && tokenizer.keyword() == Token::KeywordType::VAR) {
         compileVarDec();
     }
+
+    int nLocals = this->symbolTable.varCount(Kind::VAR);
+    this->vmWriter.writeFunction(subName, nLocals);
+
+    if (subType == Token::KeywordType::CONSTRUCTOR) {
+        int nFields = this->symbolTable.varCount(Kind::FIELD);
+        this->vmWriter.writePush(Segment::CONSTANT, nFields);
+        this->vmWriter.writeCall("Memory.alloc", 1);
+        this->vmWriter.writePop(Segment::POINTER, 0);
+    }
+
     compileStatements();
 
     process('}');
@@ -288,20 +299,30 @@ void CompilationEngine::compileSubroutineBody()
 
 void CompilationEngine::compileVarDec()
 {
+    std::string type;
+    std::string name;
+    Kind kind = Kind::VAR;
+
     process(Token::KeywordType::VAR);
     
     if (tokenizer.tokenType()==Token::TokenType::KEYWORD) {
+        type = keywordToString(tokenizer.keyword());
         process(tokenizer.keyword());
     }
     else {
+        type = tokenizer.identifier();
         process(Token::TokenType::IDENTIFIER);
     }
 
+    name = tokenizer.identifier();
     process(Token::TokenType::IDENTIFIER);
+    symbolTable.define(name, type, kind);
 
     while (tokenizer.tokenType() == Token::TokenType::SYMBOL && tokenizer.symbol() == ',') {
         process(',');
+        name = tokenizer.identifier();
         process(Token::TokenType::IDENTIFIER);
+        symbolTable.define(name, type, kind);
     }
 
     process(';');

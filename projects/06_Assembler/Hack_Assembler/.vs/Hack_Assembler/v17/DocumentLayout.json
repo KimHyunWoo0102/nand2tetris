@@ -53,7 +53,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -103,18 +103,6 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Code.h",
-              "DocumentMoniker": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Code.h",
-              "RelativeDocumentMoniker": "Hack_Assembler\\Code.h",
-              "ToolTip": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Code.h",
-              "RelativeToolTip": "Hack_Assembler\\Code.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAqAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2025-09-14T16:12:23.15Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "HackAssembler.cpp",
               "DocumentMoniker": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\HackAssembler.cpp",
@@ -125,6 +113,18 @@
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-09-15T13:13:42.015Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Code.h",
+              "DocumentMoniker": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Code.h",
+              "RelativeDocumentMoniker": "Hack_Assembler\\Code.h",
+              "ToolTip": "D:\\source\\repos\\Nand2Tetris\\projects\\06_Assembler\\Hack_Assembler\\Hack_Assembler\\Code.h",
+              "RelativeToolTip": "Hack_Assembler\\Code.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-09-14T16:12:23.15Z"
             },
             {
               "$type": "Document",
@@ -149,6 +149,16 @@
               "ViewState": "AgIAAA0AAAAAAAAAAAA0wBwAAAA+AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-09-14T14:41:33.257Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "memory",
+              "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\memory",
+              "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\memory",
+              "ViewState": "AgIAALUGAAAAAAAAAAAswMcGAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-09-16T12:30:12.629Z"
             },
             {
               "$type": "Bookmark",
@@ -189,16 +199,6 @@
               "ViewState": "AgIAABQAAAAAAAAAAAA3wCMAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2025-09-14T14:35:13.166Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "memory",
-              "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\memory",
-              "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\include\\memory",
-              "ViewState": "AgIAALUGAAAAAAAAAAAswMcGAAAOAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-09-16T12:30:12.629Z"
             }
           ]
         }
