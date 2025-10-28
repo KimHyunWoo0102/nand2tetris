@@ -1,0 +1,80 @@
+// Tests all implemented compiler features,
+// EXCLUDING array assignment (let a[i] = ...).
+// Covers declarations, control flow, expressions, term types,
+// array *access*, and all subroutine call types.
+
+class TestAlmostFull {
+
+    static int staticCounter;
+    field int x, y;
+    field Array data; // Array variable
+
+    // Test 1: Constructor (varDec, constructor logic, let, expressions)
+    constructor TestAlmostFull new(int startX, int startY, int size) {
+        var int i;
+        let x = startX;
+        let y = startY;
+        let staticCounter = 0;
+        
+        // Test ClassName.function() call
+        let data = Array.new(size); 
+        
+        // Test simple while
+        let i = 0;
+        while (i < size) {
+            // We skip array assignment (let data[i] = i;) for this test
+            let i = i + 1;
+        }
+        
+        return this; // Tests 'this' keyword
+    }
+
+    // Test 2: Method (tests 'this', method calls, if/else, field access)
+    method void move(int dx) {
+        var int newX;
+        let newX = x + dx; // Access field 'x'
+
+        if (newX < 0) {
+            let x = 0;
+        } else {
+            let x = newX;
+        }
+        
+        // Test implicit 'this' method call: subroutineName()
+        do draw(); 
+        return;
+    }
+
+    // Test 3: Method testing array *access* (read)
+    method int get(int index) {
+        var int val;
+        // Test term: varName '[' expression ']'
+        let val = data[index + 1]; 
+        return val;
+    }
+
+    // Private method (for implicit call test)
+    method void draw() {
+        // Test OS function call
+        do Screen.drawRectangle(x, y, x + 10, y + 10);
+        return;
+    }
+
+    // Test 4: Function (main)
+    function void main() {
+        var TestAlmostFull obj;
+        var int readVal;
+
+        // Test constructor call
+        let obj = TestAlmostFull.new(10, 20, 5); 
+        
+        // Test object.method() call
+        do obj.move(-5); 
+        
+        // Test method call with return, which uses array access
+        let readVal = obj.get(2); 
+
+        do Output.printInt(readVal);
+        return;
+    }
+}

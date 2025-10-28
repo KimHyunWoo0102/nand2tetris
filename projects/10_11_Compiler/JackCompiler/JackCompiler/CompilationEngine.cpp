@@ -284,6 +284,10 @@ void CompilationEngine::compileSubroutineBody(const std::string& subName, Token:
         this->vmWriter.writeCall("Memory.alloc", 1);
         this->vmWriter.writePop(Segment::POINTER, 0);
     }
+    else if (subType == Token::KeywordType::METHOD) {
+        this->vmWriter.writePush(Segment::ARGUMENT, 0);
+        this->vmWriter.writePop(Segment::POINTER, 0);
+    }
 
     compileStatements();
 
@@ -640,24 +644,48 @@ void CompilationEngine::compileTerm() {
         }
         // Case 6-2 : (className | varName) '.' subroutineName '(' expressionList ')'
         else if (nextToken.type == Token::TokenType::SYMBOL && std::get<char>(nextToken.value) == '.') {
+            std::string name1 = tokenizer.identifier();
             process(Token::TokenType::IDENTIFIER); // className or varName
             process('.');
+
+            std::string name2 = tokenizer.identifier();
             process(Token::TokenType::IDENTIFIER); // subroutineName
+
+            Kind kind1 = this->symbolTable.kindOf(name1);
+            
+            std::string fullname;
+            int nArgs = 0;
+            if (kind1 != Kind::NONE) {
+                //varname
+                this->vmWriter.writePush(segmentOf(kind1), symbolTable.indexOf(name1));
+                nArgs = 1;
+                fullname = symbolTable.typeOf(name1) + "." + name2;
+            }
+            else {
+                //className
+                nArgs = 0;
+                fullname = name1 + "." + name2;
+            }
             process('(');
-            compileExpressionList();
+            nArgs += compileExpressionList();
             process(')');
+
+            this->vmWriter.writeCall(fullname, nArgs);
         }
         // Case 6-3 : subroutineName '(' expressionList ')'
         else if (nextToken.type == Token::TokenType::SYMBOL && std::get<char>(nextToken.value) == '(') {
+            auto subName = tokenizer.identifier();
+            this->vmWriter.writePush(Segment::POINTER, 0);
             process(Token::TokenType::IDENTIFIER); // subroutineName
             process('(');
-            compileExpressionList();
+            int nArgs = 1 + compileExpressionList();
             process(')');
+
+            this->vmWriter.writeCall(this->className + "." + subName, nArgs);
         }
         // Case 6-4 : varName
         else {
             auto varName = tokenizer.identifier();
-
             auto index = this->symbolTable.indexOf(varName);
             auto kind = this->symbolTable.kindOf(varName);
             auto segment = this->segmentOf(kind);
